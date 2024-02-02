@@ -1,62 +1,65 @@
-use serde::Deserialize;
+use xmlserde::Unparsed;
+use xmlserde_derives::XmlDeserialize;
 
 use super::{array::Array, callback::Callback, function::Function, r#type::Type, version::Version};
 
-#[derive(Debug, Deserialize)]
-#[serde(rename_all = "lowercase")]
+#[derive(Debug, XmlDeserialize)]
 pub enum InnerField {
+    #[xmlserde(name = b"type")]
     Type(Type),
+    #[xmlserde(name = b"callback")]
     Callback(Callback),
+    #[xmlserde(name = b"array")]
     Array(Array),
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
 pub struct Field {
-    #[serde(rename = "@name")]
+    #[xmlserde(name = b"name", ty = "attr")]
     name: String,
-    #[serde(default, rename = "@readable")]
+    #[xmlserde(name = b"readable", ty = "attr")]
     readable: Option<bool>,
-    #[serde(default, rename = "@writable")]
+    #[xmlserde(name = b"writable", ty = "attr")]
     writable: Option<bool>,
-    #[serde(default, rename = "@private")]
+    #[xmlserde(name = b"private", ty = "attr")]
     private: Option<bool>,
-    #[serde(default)]
-    doc: Option<String>,
-    #[serde(rename = "$value")]
+    #[xmlserde(name = b"doc", ty = "child")]
+    doc: Option<Unparsed>,
+    #[xmlserde(ty = "untag")]
     inner: InnerField,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
 pub struct Record {
-    #[serde(rename = "@name")]
+    #[xmlserde(name = b"name", ty = "attr")]
     name: String,
-    #[serde(rename = "@type")]
-    c_type: String,
-    #[serde(default, rename = "@disguised")]
-    disguised: bool,
-    #[serde(default, rename = "@opaque")]
-    opaque: bool,
-    #[serde(default, rename = "@version")]
-    version: Option<Version>,
-    #[serde(default, rename = "@deprecated")]
-    deprecated: bool,
-    #[serde(default, rename = "@deprecated-version")]
-    deprecated_version: Option<Version>,
-    #[serde(default, rename = "@is-gtype-struct-for")]
+    #[xmlserde(name = b"c:type", ty = "attr")]
+    c_type: Option<String>,
+    #[xmlserde(name = b"disguised", ty = "attr")]
+    disguised: Option<bool>,
+    #[xmlserde(name = b"opaque", ty = "attr")]
+    opaque: Option<bool>,
+    #[xmlserde(name = b"version", ty = "attr")]
+    version: Option<String>,
+    #[xmlserde(name = b"deprecated", ty = "attr")]
+    deprecated: Option<bool>,
+    #[xmlserde(name = b"deprecated-version", ty = "attr")]
+    deprecated_version: Option<String>,
+    #[xmlserde(name = b"glib:is-gtype-struct-for", ty = "attr")]
     is_gtype_struct_for: Option<String>,
-    #[serde(default, rename = "@get-type")]
+    #[xmlserde(name = b"glib:get-type", ty = "attr")]
     get_type: Option<String>,
-    #[serde(default, rename = "@symbol-prefix")]
+    #[xmlserde(name = b"c:symbol-prefix", ty = "attr")]
     symbol_prefix: Option<String>,
-    #[serde(default)]
-    doc: Option<String>,
-    #[serde(default, rename = "field")]
+    #[xmlserde(name = b"doc", ty = "child")]
+    doc: Option<Unparsed>,
+    #[xmlserde(name = b"field", ty = "child")]
     fields: Vec<Field>,
-    #[serde(default, rename = "function")]
+    #[xmlserde(name = b"function", ty = "child")]
     functions: Vec<Function>,
-    #[serde(default, rename = "method")]
+    #[xmlserde(name = b"method", ty = "child")]
     methods: Vec<Function>,
-    #[serde(default, rename = "constructor")]
+    #[xmlserde(name = b"constructor", ty = "child")]
     constructors: Vec<Function>,
 }
 

@@ -1,6 +1,22 @@
+use std::path::Path;
+
 use crate::parser::repository::Repository;
 
 mod parser;
+
+pub struct Library {
+    repository: Repository,
+}
+
+impl Library {
+    pub fn from_path(path: impl AsRef<Path>) -> Result<Self, ()> {
+        println!("Parsing {}", path.as_ref().display());
+        let content = std::fs::read_to_string(path).unwrap();
+        let repository = xmlserde::xml_deserialize_from_str(&content).unwrap();
+        //println!("{:#?}", repository);
+        Ok(Self { repository })
+    }
+}
 
 fn main() {
     let gir_files = [
@@ -43,9 +59,9 @@ fn main() {
 
     for gir_file in gir_files {
         //    let gir_file = "Gtk-3.0";
-        println!("Parsing {gir_file}");
-        let content = std::fs::read_to_string(format!("./gir-files/{gir_file}.gir")).unwrap();
-        let repo: Repository = quick_xml::de::from_str(&content).unwrap();
+        let library = Library::from_path(format!("./gir-files/{gir_file}.gir")).unwrap();
         //println!("Hello, world! {:#?}", repo);
     }
+
+    //let library = Library::from_path("./gir-files/Gtk-4.0.gir").unwrap();
 }

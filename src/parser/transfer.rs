@@ -1,10 +1,10 @@
-use serde::Deserialize;
+use xmlserde::xml_serde_enum;
 
-#[derive(Default, Deserialize, Debug)]
-#[serde(rename_all = "lowercase")]
-pub enum TransferOwnership {
-    #[default]
-    None,
-    Container,
-    Full,
+xml_serde_enum! {
+    #[derive(Debug, Clone)]
+    TransferOwnership{
+        None => "none",
+        Container => "container",
+        Full => "full",
+    }
 }

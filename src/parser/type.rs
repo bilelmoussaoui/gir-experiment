@@ -1,9 +1,9 @@
-use serde::Deserialize;
+use xmlserde_derives::XmlDeserialize;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
 pub struct Type {
-    #[serde(default, rename = "@name")]
+    #[xmlserde(name = b"name", ty = "attr")]
     name: Option<String>,
-    #[serde(default, rename = "@type")]
+    #[xmlserde(name = b"c:type", ty = "attr")]
     c_type: Option<String>,
 }

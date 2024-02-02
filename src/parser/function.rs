@@ -1,88 +1,80 @@
-use serde::{Deserialize, Deserializer};
+use xmlserde::{xml_serde_enum, Unparsed};
+use xmlserde_derives::XmlDeserialize;
 
 use super::{r#type::Type, transfer::TransferOwnership, version::Version};
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
 pub struct FunctionReturn {
-    #[serde(default, rename = "@transfer-ownership")]
-    transfer: TransferOwnership,
-    #[serde(default, rename = "type")]
-    type_: Option<Type>,
-}
-
-#[derive(Deserialize, Debug)]
-#[serde(rename_all = "lowercase")]
-pub enum FunctionScope {
-    Call,
-    Notified,
-    Async,
-    Forever,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Parameter {
-    #[serde(rename = "@name")]
-    name: String,
-    #[serde(default, rename = "@transfer-ownership")]
+    #[xmlserde(name = b"transfer-ownership", ty = "attr")]
     transfer: Option<TransferOwnership>,
-    #[serde(default, rename = "@nullable")]
-    nullable: Option<bool>,
-    #[serde(default, rename = "@allow-none")]
-    allow_none: Option<bool>,
-    #[serde(default, rename = "@scope")]
-    scope: Option<FunctionScope>,
-    #[serde(default, rename = "@closure")]
-    closure: Option<u8>,
-    #[serde(default, rename = "@destroy")]
-    destroy: Option<u8>,
-    #[serde(default)]
-    doc: Option<String>,
-    #[serde(default, rename = "type")]
+    #[xmlserde(name = b"type", ty = "child")]
     type_: Option<Type>,
 }
 
-pub(super) fn unwrap_parameters<'de, D>(deserializer: D) -> Result<Vec<Parameter>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    #[derive(Deserialize)]
-    struct Parameters {
-        #[serde(default, rename = "instance-parameter")]
-        instance_parameter: Option<Parameter>,
-        #[serde(default)]
-        parameter: Vec<Parameter>,
+xml_serde_enum! {
+    #[derive(Debug, Clone)]
+    FunctionScope{
+        Call => "call",
+        Notified => "notified",
+        Async => "async",
+        Forever => "forever",
     }
-    let mut params = Parameters::deserialize(deserializer)?;
-    if let Some(instance_param) = params.instance_parameter {
-        params.parameter.insert(0, instance_param);
-    }
-    Ok(params.parameter)
 }
 
-#[derive(Debug, Deserialize)]
-pub struct Function {
-    #[serde(rename = "@name")]
+#[derive(Debug, XmlDeserialize)]
+pub struct Parameters {
+    #[xmlserde(name = b"instance-parameter", ty = "child")]
+    instance_parameter: Option<Parameter>,
+    #[xmlserde(name = b"parameter", ty = "child")]
+    parameter: Vec<Parameter>,
+}
+
+#[derive(Debug, XmlDeserialize)]
+pub struct Parameter {
+    #[xmlserde(name = b"name", ty = "attr")]
     name: String,
-    #[serde(default, rename = "@identifier")]
+    #[xmlserde(name = b"transfer-ownership", ty = "attr")]
+    transfer: Option<TransferOwnership>,
+    #[xmlserde(name = b"nullable", ty = "attr")]
+    nullable: Option<bool>,
+    #[xmlserde(name = b"allow-none", ty = "attr")]
+    allow_none: Option<bool>,
+    #[xmlserde(name = b"scope", ty = "attr")]
+    scope: Option<FunctionScope>,
+    #[xmlserde(name = b"closure", ty = "attr")]
+    closure: Option<u8>,
+    #[xmlserde(name = b"destroy", ty = "attr")]
+    destroy: Option<u8>,
+    #[xmlserde(name = b"doc", ty = "child")]
+    doc: Option<Unparsed>,
+    #[xmlserde(name = b"type", ty = "child")]
+    type_: Option<Type>,
+}
+
+#[derive(Debug, XmlDeserialize)]
+pub struct Function {
+    #[xmlserde(name = b"name", ty = "attr")]
+    name: String,
+    #[xmlserde(name = b"identifier", ty = "attr")]
     c_identifier: Option<String>,
-    #[serde(default, rename = "@version")]
-    version: Option<Version>,
-    #[serde(default, rename = "@deprecated-version")]
-    deprecated_version: Option<Version>,
-    #[serde(default, rename = "@deprecated")]
-    deprecated: bool,
-    #[serde(default, rename = "@get-property")]
+    #[xmlserde(name = b"version", ty = "attr")]
+    version: Option<String>,
+    #[xmlserde(name = b"deprecated-version", ty = "attr")]
+    deprecated_version: Option<String>,
+    #[xmlserde(name = b"deprecated", ty = "attr")]
+    deprecated: Option<bool>,
+    #[xmlserde(name = b"get-property", ty = "attr")]
     get_property: Option<String>,
-    #[serde(default, rename = "@set-property")]
+    #[xmlserde(name = b"set-property", ty = "attr")]
     set_property: Option<String>,
-    #[serde(default, rename = "@introspectable")]
+    #[xmlserde(name = b"introspectable", ty = "attr")]
     introspectable: Option<bool>,
-    #[serde(rename = "return-value")]
+    #[xmlserde(name = b"return-value", ty = "child")]
     return_value: FunctionReturn,
-    #[serde(default, deserialize_with = "unwrap_parameters")]
-    parameters: Vec<Parameter>,
-    #[serde(default)]
-    doc: Option<String>,
-    #[serde(default, rename = "doc-deprecated")]
-    doc_deprecated: Option<String>,
+    #[xmlserde(name = b"parameters", ty = "child")]
+    parameters: Option<Parameters>,
+    #[xmlserde(name = b"doc", ty = "child")]
+    doc: Option<Unparsed>,
+    #[xmlserde(name = b"doc-deprecated", ty = "child")]
+    doc_deprecated: Option<Unparsed>,
 }

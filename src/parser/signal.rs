@@ -1,30 +1,33 @@
-use serde::Deserialize;
+use xmlserde::xml_serde_enum;
+use xmlserde::Unparsed;
+use xmlserde_derives::XmlDeserialize;
 
 use super::{
-    function::{unwrap_parameters, FunctionReturn, Parameter},
+    function::{FunctionReturn, Parameters},
     version::Version,
 };
 
-#[derive(Debug, Deserialize)]
-#[serde(rename_all = "lowercase")]
-pub enum Emission {
-    First,
-    Last,
-    Cleanup,
+xml_serde_enum! {
+    #[derive(Debug, Clone)]
+    Emission{
+        First => "first",
+        Last => "last",
+        Cleanup => "cleanup",
+    }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
 pub struct Signal {
-    #[serde(rename = "@name")]
+    #[xmlserde(name = b"name", ty = "attr")]
     name: String,
-    #[serde(default, rename = "@when")]
+    #[xmlserde(name = b"when", ty = "attr")]
     when: Option<Emission>,
-    #[serde(default, rename = "@version")]
-    version: Option<Version>,
-    #[serde(default, rename = "doc")]
-    doc: Option<String>,
-    #[serde(rename = "return-value")]
+    #[xmlserde(name = b"version", ty = "attr")]
+    version: Option<String>,
+    #[xmlserde(name = b"doc", ty = "child")]
+    doc: Option<Unparsed>,
+    #[xmlserde(name = b"return-value", ty = "child")]
     return_value: FunctionReturn,
-    #[serde(default, deserialize_with = "unwrap_parameters")]
-    parameters: Vec<Parameter>,
+    #[xmlserde(name = b"parameters", ty = "child")]
+    parameters: Parameters,
 }

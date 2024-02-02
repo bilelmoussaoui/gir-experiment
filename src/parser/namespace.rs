@@ -1,4 +1,4 @@
-use serde::Deserialize;
+use xmlserde_derives::XmlDeserialize;
 
 use super::{
     alias::Alias, class::Class, constant::Constant, enums::Enumeration, function::Function,
@@ -6,34 +6,35 @@ use super::{
     version::Version,
 };
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
+#[xmlserde(root = b"namespace")]
 pub struct Namespace {
-    #[serde(rename = "@name")]
+    #[xmlserde(name = b"name", ty = "attr")]
     name: String,
-    #[serde(rename = "@version")]
-    version: Version,
-    #[serde(rename = "@identifier-prefixes")]
-    identifier_prefix: String,
-    #[serde(rename = "@symbol-prefixes")]
-    symbol_prefix: String,
-    #[serde(default, rename = "@shared-library")]
+    #[xmlserde(name = b"version", ty = "attr")]
+    version: String,
+    #[xmlserde(name = b"c:identifier-prefixes", ty = "attr")]
+    c_identifier_prefix: String,
+    #[xmlserde(name = b"c:symbol-prefixes", ty = "attr")]
+    c_symbol_prefix: String,
+    #[xmlserde(name = b"shared-library", ty = "attr")]
     shared_library: Option<String>,
-    #[serde(default, rename = "alias")]
+    #[xmlserde(name = b"alias", ty = "child")]
     aliases: Vec<Alias>,
-    #[serde(default, rename = "constant")]
+    #[xmlserde(name = b"constant", ty = "child")]
     constants: Vec<Constant>,
-    #[serde(default, rename = "union")]
+    #[xmlserde(name = b"union", ty = "child")]
     unions: Vec<Union>,
-    #[serde(default, rename = "function")]
+    #[xmlserde(name = b"function", ty = "child")]
     functions_global: Vec<Function>,
-    #[serde(default, rename = "function-macro")]
+    #[xmlserde(name = b"function-macro", ty = "child")]
     functions_macro: Vec<FunctionMacro>,
-    #[serde(default, rename = "record")]
+    #[xmlserde(name = b"record", ty = "child")]
     records: Vec<Record>,
-    #[serde(default, rename = "enumeration")]
+    #[xmlserde(name = b"enumeration", ty = "child")]
     enums: Vec<Enumeration>,
-    #[serde(default, rename = "class")]
+    #[xmlserde(name = b"class", ty = "child")]
     classes: Vec<Class>,
-    #[serde(default, rename = "interface")]
+    #[xmlserde(name = b"interface", ty = "child")]
     interfaces: Vec<Interface>,
 }

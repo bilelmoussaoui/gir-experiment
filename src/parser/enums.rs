@@ -1,31 +1,32 @@
-use serde::Deserialize;
+use xmlserde::Unparsed;
+use xmlserde_derives::XmlDeserialize;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
 pub struct Member {
-    //#[serde(rename = "@name")]
-    //name: String,
-    #[serde(rename = "@value")]
+    #[xmlserde(name = b"name", ty = "attr")]
+    name: String,
+    #[xmlserde(name = b"value", ty = "attr")]
     value: String,
-    #[serde(rename = "@identifier")]
+    #[xmlserde(name = b"c:identifier", ty = "attr")]
     c_identifier: String,
-    #[serde(default, rename = "@nick")]
+    #[xmlserde(name = b"nick", ty = "attr")]
     nick: Option<String>,
-    #[serde(default)]
-    doc: Option<String>,
+    #[xmlserde(name = b"doc", ty = "child")]
+    doc: Option<Unparsed>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
 pub struct Enumeration {
-    #[serde(rename = "@name")]
+    #[xmlserde(name = b"name", ty = "attr")]
     name: String,
-    #[serde(rename = "@type")]
+    #[xmlserde(name = b"c:type", ty = "attr")]
     c_type: String,
-    #[serde(rename = "@type-name")]
+    #[xmlserde(name = b"type-name", ty = "attr")]
     type_name: Option<String>,
-    #[serde(rename = "@get-type")]
+    #[xmlserde(name = b"get-type", ty = "attr")]
     get_type: Option<String>,
-    #[serde(default)]
-    doc: Option<String>,
-    #[serde(default, rename = "member")]
+    #[xmlserde(name = b"doc", ty = "child")]
+    doc: Option<Unparsed>,
+    #[xmlserde(name = b"member", ty = "child")]
     members: Vec<Member>,
 }

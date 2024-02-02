@@ -1,15 +1,15 @@
-use serde::Deserialize;
+use xmlserde_derives::XmlDeserialize;
 
 use super::r#type::Type;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
 pub struct Array {
-    #[serde(default, rename = "@type")]
+    #[xmlserde(name = b"c:type", ty = "attr")]
     c_identifier: Option<String>,
-    #[serde(default, rename = "@zero-terminated")]
+    #[xmlserde(name = b"zero-terminated", ty = "attr")]
     zero_terminated: Option<bool>,
-    #[serde(default, rename = "@fixed-size")]
+    #[xmlserde(name = b"fixed-size", ty = "attr")]
     fixed_size: Option<u16>,
-    #[serde(rename = "type")]
+    #[xmlserde(name = b"type", ty = "child")]
     type_: Type,
 }

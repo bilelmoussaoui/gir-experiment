@@ -1,17 +1,16 @@
-use serde::Deserialize;
-
 use super::r#type::Type;
+use xmlserde_derives::XmlDeserialize;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
 pub struct Constant {
-    #[serde(rename = "@name")]
+    #[xmlserde(name = b"name", ty = "attr")]
     name: String,
-    #[serde(rename = "@value")]
+    #[xmlserde(name = b"value", ty = "attr")]
     value: String,
-    #[serde(rename = "@type")]
-    c_identifier: String,
-    #[serde(default)]
-    doc: Option<String>,
-    #[serde(rename = "type")]
+    #[xmlserde(name = b"c:type", ty = "attr")]
+    c_type: String,
+    //#[xmlserde(name = b"doc", ty = "child")]
+    //doc: Option<String>,
+    #[xmlserde(name = b"type", ty = "child")]
     type_: Type,
 }

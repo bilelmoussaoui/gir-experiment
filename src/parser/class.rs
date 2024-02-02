@@ -1,53 +1,56 @@
-use serde::Deserialize;
+use xmlserde::Unparsed;
+use xmlserde_derives::XmlDeserialize;
 
 use super::{function::Function, property::Property, signal::Signal};
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
 pub struct Implements {
-    #[serde(rename = "@name")]
+    #[xmlserde(name = b"name", ty = "attr")]
     name: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
 pub struct Class {
-    #[serde(rename = "@name")]
+    #[xmlserde(name = b"name", ty = "attr")]
     name: String,
-    #[serde(rename = "@symbol-prefix")]
+    #[xmlserde(name = b"c:symbol-prefix", ty = "attr")]
     symbol_prefix: String,
-    #[serde(rename = "@type")]
+    #[xmlserde(name = b"c:type", ty = "attr")]
     c_type: Option<String>,
-    #[serde(default, rename = "@parent")]
+    #[xmlserde(name = b"parent", ty = "attr")]
     parent: Option<String>,
-    #[serde(rename = "@type-name")]
+    #[xmlserde(name = b"glib:type-name", ty = "attr")]
     type_name: String,
-    #[serde(rename = "@get-type")]
+    #[xmlserde(name = b"glib:get-type", ty = "attr")]
     get_type: String,
-    #[serde(default, rename = "@fundamental")]
-    fundamental: bool,
-    #[serde(default, rename = "@abstract")]
-    r#abstract: bool,
-    #[serde(default, rename = "@ref-func")]
+    #[xmlserde(name = b"glib:type-struct", ty = "attr")]
+    type_struct: Option<String>,
+    #[xmlserde(name = b"glib:fundamental", ty = "attr")]
+    fundamental: Option<bool>,
+    #[xmlserde(name = b"abstract", ty = "attr")]
+    r#abstract: Option<bool>,
+    #[xmlserde(name = b"glib:ref-func", ty = "attr")]
     ref_func: Option<String>,
-    #[serde(default, rename = "@unref-func")]
+    #[xmlserde(name = b"glib:unref-func", ty = "attr")]
     unref_func: Option<String>,
-    #[serde(default, rename = "@set-value-func")]
+    #[xmlserde(name = b"glib:set-value-func", ty = "attr")]
     set_value_func: Option<String>,
-    #[serde(default, rename = "@get-value-func")]
+    #[xmlserde(name = b"glib:get-value-func", ty = "attr")]
     get_value_func: Option<String>,
-    #[serde(default)]
-    doc: Option<String>,
-    #[serde(default, rename = "implements")]
+    #[xmlserde(name = b"doc", ty = "child")]
+    doc: Option<Unparsed>,
+    #[xmlserde(name = b"implements", ty = "child")]
     implements: Vec<Implements>,
-    #[serde(default, rename = "constructor")]
+    #[xmlserde(name = b"constructor", ty = "child")]
     constructors: Vec<Function>,
-    #[serde(default, rename = "function")]
+    #[xmlserde(name = b"function", ty = "child")]
     functions: Vec<Function>,
-    #[serde(default, rename = "method")]
+    #[xmlserde(name = b"method", ty = "child")]
     methods: Vec<Function>,
-    #[serde(default, rename = "property")]
+    #[xmlserde(name = b"property", ty = "child")]
     properties: Vec<Property>,
-    #[serde(default, rename = "signal")]
+    #[xmlserde(name = b"signal", ty = "child")]
     signals: Vec<Signal>,
-    #[serde(default, rename = "virtual-method")]
+    #[xmlserde(name = b"virtual-method", ty = "child")]
     virtual_methods: Vec<Function>,
 }

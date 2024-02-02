@@ -1,13 +1,15 @@
-use serde::Deserialize;
+use xmlserde_derives::XmlDeserialize;
 
-use super::function::{unwrap_parameters, FunctionReturn, Parameter};
+use super::function::{FunctionReturn, Parameters};
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
 pub struct Callback {
-    #[serde(rename = "@name")]
+    #[xmlserde(name = b"name", ty = "attr")]
     name: String,
-    #[serde(rename = "return-value")]
+    #[xmlserde(name = b"c:type", ty = "attr")]
+    c_type: Option<String>,
+    #[xmlserde(name = b"return-value", ty = "child")]
     return_value: FunctionReturn,
-    #[serde(default, deserialize_with = "unwrap_parameters")]
-    parameters: Vec<Parameter>,
+    #[xmlserde(name = b"parameters", ty = "child")]
+    parameters: Option<Parameters>,
 }

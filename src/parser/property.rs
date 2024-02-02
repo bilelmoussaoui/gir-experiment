@@ -1,19 +1,19 @@
-use serde::Deserialize;
+use xmlserde_derives::XmlDeserialize;
 
 use super::transfer::TransferOwnership;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
 pub struct Property {
-    #[serde(rename = "@name")]
+    #[xmlserde(name = b"name", ty = "attr")]
     name: String,
-    #[serde(default, rename = "@writable")]
+    #[xmlserde(name = b"writable", ty = "attr")]
     writable: Option<bool>,
-    #[serde(default, rename = "@construct-only")]
+    #[xmlserde(name = b"construct-only", ty = "attr")]
     construct_only: Option<bool>,
-    #[serde(rename = "@transfer-ownership")]
+    #[xmlserde(name = b"transfer-ownership", ty = "attr")]
     transfer_ownership: TransferOwnership,
-    #[serde(default, rename = "@getter")]
+    #[xmlserde(name = b"getter", ty = "attr")]
     getter: Option<String>,
-    #[serde(default, rename = "@default-value")]
+    #[xmlserde(name = b"default-value", ty = "attr")]
     default_value: Option<String>,
 }

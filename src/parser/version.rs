@@ -1,4 +1,7 @@
-use serde::Deserialize;
+use xmlserde_derives::XmlDeserialize;
 
-#[derive(Debug, Deserialize)]
-pub struct Version(String);
+#[derive(Debug, XmlDeserialize)]
+pub struct Version {
+    #[xmlserde(ty = "text")]
+    inner: String,
+}

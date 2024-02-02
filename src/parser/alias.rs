@@ -1,12 +1,12 @@
 use super::r#type::Type;
-use serde::Deserialize;
+use xmlserde_derives::XmlDeserialize;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
 pub struct Alias {
-    #[serde(rename = "@name")]
+    #[xmlserde(name = b"name", ty = "attr")]
     name: String,
-    #[serde(rename = "@type")]
+    #[xmlserde(name = b"c:type", ty = "attr")]
     c_type: String,
-    #[serde(rename = "type")]
+    #[xmlserde(name = b"type", ty = "child")]
     type_: Type,
 }

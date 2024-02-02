@@ -6,8 +6,8 @@ version = 3
 name = "gir2"
 version = "0.1.0"
 dependencies = [
- "quick-xml",
- "serde",
+ "xmlserde",
+ "xmlserde_derives",
 ]
 
 [[package]]
@@ -80,3 +80,23 @@ name = "unicode-ident"
 version = "1.0.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3354b9ac3fae1ff6755cb6db53683adb661634f67557942dea4facebec0fee4b"
+
+[[package]]
+name = "xmlserde"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "07a848187526edc36e54c0748d1d66ab18727605239a7816a844d445d16597a7"
+dependencies = [
+ "quick-xml",
+]
+
+[[package]]
+name = "xmlserde_derives"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5ffbbdff7e9b6b06a984ca40ebcfd811a0010b822fcb52a057a0660f7191d1ea"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]

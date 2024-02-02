@@ -1,39 +1,40 @@
-use serde::Deserialize;
+use xmlserde::Unparsed;
+use xmlserde_derives::XmlDeserialize;
 
 use super::{function::Function, property::Property, signal::Signal};
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
 pub struct Prerequisite {
-    #[serde(rename = "@name")]
+    #[xmlserde(name = b"name", ty = "attr")]
     name: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
 pub struct Interface {
-    #[serde(rename = "@name")]
+    #[xmlserde(name = b"name", ty = "attr")]
     name: String,
-    #[serde(rename = "@symbol-prefix")]
+    #[xmlserde(name = b"c:symbol-prefix", ty = "attr")]
     symbol_prefix: String,
-    #[serde(rename = "@type")]
+    #[xmlserde(name = b"c:type", ty = "attr")]
     c_type: Option<String>,
-    #[serde(rename = "@type-name")]
+    #[xmlserde(name = b"glib:type-name", ty = "attr")]
     type_name: String,
-    #[serde(rename = "@get-type")]
+    #[xmlserde(name = b"glib:get-type", ty = "attr")]
     get_type: String,
-    #[serde(default, rename = "@type-struct")]
-    type_struct: String,
-    #[serde(default)]
-    doc: Option<String>,
-    #[serde(default, rename = "prerequisite")]
+    #[xmlserde(name = b"glib:type-struct", ty = "attr")]
+    type_struct: Option<String>,
+    #[xmlserde(name = b"doc", ty = "child")]
+    doc: Option<Unparsed>,
+    #[xmlserde(name = b"prerequisite", ty = "child")]
     prerequisites: Vec<Prerequisite>,
-    #[serde(default, rename = "function")]
+    #[xmlserde(name = b"function", ty = "child")]
     functions: Vec<Function>,
-    #[serde(default, rename = "method")]
+    #[xmlserde(name = b"method", ty = "child")]
     methods: Vec<Function>,
-    #[serde(default, rename = "property")]
+    #[xmlserde(name = b"property", ty = "child")]
     properties: Vec<Property>,
-    #[serde(default, rename = "signal")]
+    #[xmlserde(name = b"signal", ty = "child")]
     signals: Vec<Signal>,
-    #[serde(default, rename = "virtual-method")]
+    #[xmlserde(name = b"virtual-method", ty = "child")]
     virtual_methods: Vec<Function>,
 }

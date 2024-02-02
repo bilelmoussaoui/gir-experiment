@@ -1,20 +1,17 @@
-use serde::Deserialize;
+use xmlserde_derives::XmlDeserialize;
 
-use super::{
-    function::{unwrap_parameters, Parameter},
-    version::Version,
-};
+use super::{function::Parameters, version::Version};
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
 pub struct FunctionMacro {
-    #[serde(rename = "@name")]
+    #[xmlserde(name = b"name", ty = "attr")]
     name: String,
-    #[serde(rename = "@identifier")]
+    #[xmlserde(name = b"c:identifier", ty = "attr")]
     c_identifier: String,
-    #[serde(rename = "@introspectable")]
+    #[xmlserde(name = b"introspectable", ty = "attr")]
     introspectable: bool,
-    #[serde(default, rename = "@version")]
-    version: Option<Version>,
-    #[serde(default, deserialize_with = "unwrap_parameters")]
-    parameters: Vec<Parameter>,
+    #[xmlserde(name = b"version", ty = "attr")]
+    version: Option<String>,
+    #[xmlserde(name = b"parameters", ty = "child")]
+    parameters: Option<Parameters>,
 }

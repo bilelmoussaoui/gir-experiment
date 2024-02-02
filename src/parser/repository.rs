@@ -1,34 +1,37 @@
 use super::{namespace::Namespace, version::Version};
-use serde::Deserialize;
+use xmlserde_derives::XmlDeserialize;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
 pub struct Include {
-    #[serde(rename = "@name")]
+    #[xmlserde(name = b"name", ty = "attr")]
     name: String,
-    #[serde(rename = "@version")]
-    version: Version,
+    #[xmlserde(name = b"version", ty = "attr")]
+    version: Option<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
 pub struct Package {
-    #[serde(rename = "@name")]
+    #[xmlserde(name = b"name", ty = "attr")]
     name: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, XmlDeserialize)]
+#[xmlserde(root = b"repository")]
 pub struct Repository {
-    #[serde(rename = "@version")]
-    version: Version,
-    //    #[serde(default, rename = "include")]
-    //    includes: Vec<Include>,
-    //    c_includes: Vec<String>,
-    #[serde(default, rename = "package")]
+    #[xmlserde(name = b"version", ty = "attr")]
+    version: String,
+    #[xmlserde(name = b"include", ty = "child")]
+    includes: Vec<Include>,
+    #[xmlserde(name = b"c:include", ty = "child")]
+    c_includes: Vec<Include>,
+    #[xmlserde(name = b"package", ty = "child")]
     packages: Vec<Package>,
+    #[xmlserde(name = b"namespace", ty = "child")]
     namespace: Namespace,
 }
 
 impl Repository {
-    pub fn namespace(&self) -> &Namespace {
-        &self.namespace
-    }
+    //pub fn namespace(&self) -> &Namespace {
+    //    &self.namespace
+    //}
 }
