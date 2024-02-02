@@ -4,6 +4,7 @@ mod alias;
 mod array;
 mod callback;
 mod class;
+mod constant;
 mod enums;
 mod function;
 mod function_macro;

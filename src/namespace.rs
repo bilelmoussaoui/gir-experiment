@@ -1,7 +1,7 @@
 use serde::Deserialize;
 
 use crate::{
-    alias::Alias, class::Class, enums::Enumeration, function::Function,
+    alias::Alias, class::Class, constant::Constant, enums::Enumeration, function::Function,
     function_macro::FunctionMacro, record::Record, union::Union, version::Version,
 };
 
@@ -31,4 +31,6 @@ pub struct Namespace {
     enums: Vec<Enumeration>,
     #[serde(default, rename = "class")]
     classes: Vec<Class>,
+    #[serde(default, rename = "constant")]
+    constants: Vec<Constant>,
 }
