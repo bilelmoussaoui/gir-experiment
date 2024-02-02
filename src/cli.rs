@@ -1,13 +1,15 @@
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 use clap::{Parser, ValueEnum};
 
-#[derive(ValueEnum, Debug, Copy, Clone)] // ArgEnum here
+#[derive(ValueEnum, serde::Deserialize, Default, Debug, Copy, Clone)]
 #[clap(rename_all = "kebab_case")]
+#[serde(rename_all = "lowercase")]
 pub enum Mode {
     Doc,
     Normal,
     Sys,
+    #[default]
     NotBound,
 }
 

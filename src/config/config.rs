@@ -2,6 +2,10 @@ use std::path::{Path, PathBuf};
 
 use serde::Deserialize;
 
+use crate::cli::Mode;
+
+use super::ParserError;
+
 #[derive(Debug, Deserialize)]
 pub struct Options {
     library: String,
@@ -17,9 +21,13 @@ pub struct Options {
     generate_builder: Option<bool>,
     disable_format: Option<bool>,
     trust_return_value_nullability: Option<bool>,
+    #[serde(default)]
     generate: Vec<String>,
+    #[serde(default)]
     ignore: Vec<String>,
+    #[serde(default)]
     manual: Vec<String>,
+    work_mode: Option<Mode>,
 }
 
 impl Options {
@@ -29,6 +37,10 @@ impl Options {
 
     pub fn girs_directories(&self) -> &[PathBuf] {
         &self.girs_directories
+    }
+
+    pub fn work_mode(&self) -> Option<Mode> {
+        self.work_mode
     }
 }
 
@@ -113,9 +125,9 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn from_path(path: impl AsRef<Path>) -> Result<Self, ()> {
-        let buffer = std::fs::read_to_string(path).unwrap();
-        Ok(toml::from_str(&buffer).unwrap())
+    pub fn from_path(path: impl AsRef<Path>) -> Result<Self, ParserError> {
+        let buffer = std::fs::read_to_string(path)?;
+        toml::from_str(&buffer).map_err(From::from)
     }
 
     pub fn options(&self) -> &Options {

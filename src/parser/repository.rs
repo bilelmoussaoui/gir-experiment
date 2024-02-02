@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use super::{namespace::Namespace, version::Version};
+use super::{namespace::Namespace, version::Version, ParserError};
 use xmlserde_derives::XmlDeserialize;
 
 #[derive(Debug, XmlDeserialize)]
@@ -49,10 +49,10 @@ pub struct Repository {
 }
 
 impl Repository {
-    pub fn from_path(path: impl AsRef<Path>) -> Result<Self, ()> {
+    pub fn from_path(path: impl AsRef<Path>) -> Result<Self, ParserError> {
         println!("Parsing {}", path.as_ref().display());
-        let content = std::fs::read_to_string(path).unwrap();
-        let repository = xmlserde::xml_deserialize_from_str(&content).unwrap();
+        let content = std::fs::read_to_string(path)?;
+        let repository = xmlserde::xml_deserialize_from_str(&content).map_err(ParserError::Xml)?;
         Ok(repository)
     }
 

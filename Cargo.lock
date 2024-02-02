@@ -306,6 +306,7 @@ dependencies = [
  "clap",
  "serde",
  "tera",
+ "thiserror",
  "toml",
  "xmlserde",
  "xmlserde_derives",

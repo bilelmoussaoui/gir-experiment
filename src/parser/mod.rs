@@ -1,3 +1,11 @@
+#[derive(Debug, thiserror::Error)]
+pub enum ParserError {
+    #[error("I/O operation failed")]
+    IO(#[from] std::io::Error),
+    #[error("Failed to parse xml file: {0}")]
+    Xml(String),
+}
+
 pub mod alias;
 pub mod array;
 pub mod bitfield;
