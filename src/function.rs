@@ -66,6 +66,10 @@ pub struct Function {
     deprecated_version: Option<Version>,
     #[serde(default, rename = "@deprecated")]
     deprecated: bool,
+    #[serde(default, rename = "@get-property")]
+    get_property: Option<String>,
+    #[serde(default, rename = "@set-property")]
+    set_property: Option<String>,
     #[serde(rename = "return-value")]
     return_value: FunctionReturn,
     #[serde(default, deserialize_with = "unwrap_parameters")]
