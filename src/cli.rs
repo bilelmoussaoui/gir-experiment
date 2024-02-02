@@ -12,6 +12,7 @@ pub enum Mode {
 }
 
 #[derive(Debug, Parser)]
+#[cfg_attr(test, derive(Default))]
 #[command(version, about, long_about = None)]
 pub struct Args {
     /// Config file path (default: Gir.toml)
@@ -26,7 +27,7 @@ pub struct Args {
     target: Option<PathBuf>,
     /// Directories for GIR files
     #[arg(short = 'd', long, value_name = "GIRSPATH")]
-    girs_directories: Vec<PathBuf>,
+    pub(super) girs_directories: Vec<PathBuf>,
     /// Doc target path
     #[arg(short = 'p', long, value_name = "PATH")]
     doc_target: Option<PathBuf>,
@@ -43,21 +44,6 @@ pub struct Args {
 }
 
 impl Args {
-    #[cfg(test)]
-    pub fn for_test(girs_directories: &[PathBuf]) -> Self {
-        Self {
-            config: None,
-            mode: None,
-            target: None,
-            girs_directories: girs_directories.to_owned(),
-            doc_target: None,
-            make_backup: None,
-            stats: None,
-            disable_format: None,
-            check_gir_file: None,
-        }
-    }
-
     pub fn mode(&self) -> Option<Mode> {
         self.mode
     }

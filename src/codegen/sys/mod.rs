@@ -1,6 +1,6 @@
 use crate::Library;
 
-pub fn generate(library: &Library) {
+pub fn generate(library: &Library, dest: impl std::io::Write) {
     println!(
         "Generating ffi for {}",
         library.repository.namespace().name()
@@ -104,5 +104,6 @@ pub fn generate(library: &Library) {
     context.insert("constants", &constants.join("\n"));
     context.insert("flags", &flags.join("\n"));
     context.insert("records", &records.join("\n"));
-    println!("{}", tera.render("lib.rs", &context).unwrap());
+    context.insert("link_name", &library.repository.namespace().link_name());
+    tera.render_to("lib.rs", &context, dest).unwrap();
 }

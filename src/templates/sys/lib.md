@@ -46,3 +46,10 @@ use libc::{
 
 {{ records }}
 {% endif %}
+
+{% if link_name %}
+#[link(name = "{{link_name}}")]
+{% endif %}
+extern "C" {
+
+}

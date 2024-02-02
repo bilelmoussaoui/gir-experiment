@@ -63,7 +63,14 @@ impl Library {
             cli::Mode::Doc => todo!(),
             cli::Mode::Normal => todo!(),
             cli::Mode::Sys => {
-                codegen::sys::generate(self);
+                codegen::sys::generate(
+                    self,
+                    std::fs::OpenOptions::new()
+                        .create(true)
+                        .write(true)
+                        .open("./tests/sys/lib.rs")
+                        .unwrap(),
+                );
             }
             cli::Mode::NotBound => todo!(),
         }

@@ -7,6 +7,7 @@ use super::{
 };
 
 #[derive(Debug, XmlDeserialize)]
+#[cfg_attr(test, derive(Default))]
 #[xmlserde(root = b"namespace")]
 pub struct Namespace {
     #[xmlserde(name = b"name", ty = "attr")]
@@ -68,5 +69,42 @@ impl Namespace {
 
     pub fn records(&self) -> &[Record] {
         &self.records
+    }
+
+    /// Copied from the old gir
+    pub fn link_name(&self) -> Option<&str> {
+        let mut s = self.shared_library.as_deref()?;
+
+        if s.starts_with("lib") {
+            s = &s[3..];
+        }
+
+        if let Some(offset) = s.rfind(".so") {
+            s = &s[..offset];
+        } else if let Some(offset) = s.rfind(".dll") {
+            s = &s[..offset];
+            if let Some(offset) = s.rfind('-') {
+                s = &s[..offset];
+            }
+        }
+
+        Some(s)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn shared_library_to_link_name() {
+        let mut namespace = super::Namespace::default();
+        let tests = [
+            ("libgtk-4-1.dll", "gtk-4"),
+            ("libatk-1.0.so.0", "atk-1.0"),
+            ("libgdk_pixbuf-2.0.so.0", "gdk_pixbuf-2.0"),
+        ];
+        for (shared_lib, expected_result) in tests {
+            namespace.shared_library = Some(shared_lib.to_owned());
+            assert_eq!(namespace.link_name(), Some(expected_result));
+        }
     }
 }
