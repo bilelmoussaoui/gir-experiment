@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use clap::{Parser, ValueEnum};
 
@@ -12,12 +12,11 @@ pub enum Mode {
 }
 
 #[derive(Debug, Parser)]
-#[cfg_attr(test, derive(Default))]
 #[command(version, about, long_about = None)]
 pub struct Args {
     /// Config file path (default: Gir.toml)
     #[arg(short, long, value_name = "CONFIG")]
-    config: Option<PathBuf>,
+    config: PathBuf,
     /// Work mode
     #[arg(value_enum, short, long, value_name = "MODE")]
     mode: Option<Mode>,
@@ -27,7 +26,7 @@ pub struct Args {
     target: Option<PathBuf>,
     /// Directories for GIR files
     #[arg(short = 'd', long, value_name = "GIRSPATH")]
-    pub(super) girs_directories: Vec<PathBuf>,
+    girs_directories: Vec<PathBuf>,
     /// Doc target path
     #[arg(short = 'p', long, value_name = "PATH")]
     doc_target: Option<PathBuf>,
@@ -50,5 +49,9 @@ impl Args {
 
     pub fn girs_directories(&self) -> &[PathBuf] {
         &self.girs_directories
+    }
+
+    pub fn config(&self) -> &PathBuf {
+        &self.config
     }
 }

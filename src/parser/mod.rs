@@ -22,7 +22,7 @@ pub mod version;
 mod tests {
     use std::path::PathBuf;
 
-    use crate::Library;
+    use crate::parser::repository::Repository;
 
     #[test]
     fn parse_all_gir_files() {
@@ -65,15 +65,14 @@ mod tests {
         ];
 
         for gir_file in GIR_FILES {
-            let mut args = crate::cli::Args::default();
-            args.girs_directories = vec![PathBuf::from("./gir-files")];
-            let library = Library::for_package(&format!("{}.gir", gir_file), args).unwrap();
+            let path = PathBuf::from("./gir-files").join(&format!("{}.gir", gir_file));
+            let repository = Repository::from_path(path).unwrap();
             assert_eq!(
                 gir_file,
                 format!(
                     "{}-{}",
-                    library.repository.namespace().name(),
-                    library.repository.namespace().version()
+                    repository.namespace().name(),
+                    repository.namespace().version()
                 )
             );
         }

@@ -11,3 +11,4 @@ serde = { version = "1.0", features = ["derive"] }
 xmlserde = "0.7"
 xmlserde_derives = "0.7"
 tera = "1"
+toml = "0.8"

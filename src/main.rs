@@ -2,16 +2,19 @@ use std::{collections::HashMap, path::PathBuf};
 
 use clap::Parser;
 use cli::Args;
+use config::config::Config;
 
 use crate::parser::repository::Repository;
 
 mod cli;
 mod codegen;
+mod config;
 mod parser;
 
 pub struct Library {
     repository: Repository,
     namespaces: HashMap<String, Repository>,
+    config: Config,
     args: Args,
 }
 
@@ -33,7 +36,12 @@ fn find_file_or_fail(filename: &str, paths: &[PathBuf]) -> Result<PathBuf, Strin
 }
 
 impl Library {
-    pub fn for_package(package: &str, args: Args) -> Result<Self, &'static str> {
+    pub fn new(args: Args) -> Result<Self, &'static str> {
+        let config = Config::from_path(args.config()).unwrap();
+        let mut girs_directories = config.options().girs_directories().to_owned();
+        girs_directories.extend(args.girs_directories().to_owned());
+
+        let package = &config.options().package_file();
         let main_namespace =
             Repository::from_path(find_file_or_fail(package, &args.girs_directories()).unwrap())
                 .unwrap();
@@ -55,6 +63,7 @@ impl Library {
             repository: main_namespace,
             namespaces,
             args,
+            config,
         })
     }
 
@@ -79,8 +88,8 @@ impl Library {
 
 fn main() {
     let args = Args::parse();
-    // TODO: normally the fallback value should be from the Gir.toml file
+    //// TODO: normally the fallback value should be from the Gir.toml file
     let mode = args.mode().unwrap();
-    let library = Library::for_package("Gtk-4.0.gir", args).unwrap();
+    let library = Library::new(args).unwrap();
     library.generate(mode);
 }
