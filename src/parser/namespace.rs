@@ -46,4 +46,12 @@ impl Namespace {
     pub fn version(&self) -> &str {
         &self.version
     }
+
+    pub fn aliases(&self) -> &[Alias] {
+        &self.aliases
+    }
+
+    pub fn enums(&self) -> &[Enumeration] {
+        &self.enums
+    }
 }

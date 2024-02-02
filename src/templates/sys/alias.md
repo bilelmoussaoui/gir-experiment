@@ -1,0 +1,1 @@
+pub type {{target_type}} = {{dest_type}};

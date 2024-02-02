@@ -15,6 +15,16 @@ pub struct Member {
     doc: Option<Unparsed>,
 }
 
+impl Member {
+    pub fn c_identifier(&self) -> &str {
+        &self.c_identifier
+    }
+
+    pub fn value(&self) -> &str {
+        &self.value
+    }
+}
+
 #[derive(Debug, XmlDeserialize)]
 pub struct Enumeration {
     #[xmlserde(name = b"name", ty = "attr")]
@@ -29,4 +39,14 @@ pub struct Enumeration {
     doc: Option<Unparsed>,
     #[xmlserde(name = b"member", ty = "child")]
     members: Vec<Member>,
+}
+
+impl Enumeration {
+    pub fn c_type(&self) -> &str {
+        &self.c_type
+    }
+
+    pub fn members(&self) -> &[Member] {
+        &self.members
+    }
 }

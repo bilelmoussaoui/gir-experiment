@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use clap::{Parser, ValueEnum};
 
-#[derive(ValueEnum, Debug, Clone)] // ArgEnum here
+#[derive(ValueEnum, Debug, Copy, Clone)] // ArgEnum here
 #[clap(rename_all = "kebab_case")]
 pub enum Mode {
     Doc,
@@ -56,6 +56,10 @@ impl Args {
             disable_format: None,
             check_gir_file: None,
         }
+    }
+
+    pub fn mode(&self) -> Option<Mode> {
+        self.mode
     }
 
     pub fn girs_directories(&self) -> &[PathBuf] {

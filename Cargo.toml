@@ -9,3 +9,4 @@ edition = "2021"
 clap = { version = "4.4.6", features = [ "cargo", "derive" ] }
 xmlserde = "0.7"
 xmlserde_derives = "0.7"
+tera = "1"

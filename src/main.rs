@@ -6,6 +6,7 @@ use cli::Args;
 use crate::parser::repository::Repository;
 
 mod cli;
+mod codegen;
 mod parser;
 
 pub struct Library {
@@ -56,10 +57,23 @@ impl Library {
             args,
         })
     }
+
+    pub fn generate(&self, mode: cli::Mode) {
+        match mode {
+            cli::Mode::Doc => todo!(),
+            cli::Mode::Normal => todo!(),
+            cli::Mode::Sys => {
+                codegen::sys::generate(self);
+            }
+            cli::Mode::NotBound => todo!(),
+        }
+    }
 }
 
 fn main() {
     let args = Args::parse();
-
+    // TODO: normally the fallback value should be from the Gir.toml file
+    let mode = args.mode().unwrap();
     let library = Library::for_package("Gtk-4.0.gir", args).unwrap();
+    library.generate(mode);
 }
