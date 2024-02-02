@@ -2,8 +2,8 @@ use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 pub struct Member {
-    #[serde(rename = "@name")]
-    name: String,
+    //#[serde(rename = "@name")]
+    //name: String,
     #[serde(rename = "@value")]
     value: u32,
     #[serde(rename = "@identifier")]
