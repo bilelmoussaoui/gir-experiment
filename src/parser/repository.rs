@@ -3,7 +3,7 @@ use std::path::Path;
 use xmlserde_derives::XmlDeserialize;
 
 use super::{namespace::Namespace, ParserError};
-use crate::Version;
+use crate::version::Version;
 
 #[derive(Debug, XmlDeserialize)]
 pub struct NamespaceInclude {

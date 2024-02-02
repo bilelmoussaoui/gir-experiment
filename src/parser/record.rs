@@ -2,7 +2,7 @@ use xmlserde::Unparsed;
 use xmlserde_derives::XmlDeserialize;
 
 use super::{array::Array, callback::Callback, function::Function, r#type::Type};
-use crate::Version;
+use crate::version::Version;
 
 #[derive(Debug, XmlDeserialize)]
 pub enum InnerField {

@@ -21,7 +21,6 @@ pub mod property;
 pub mod record;
 pub mod repository;
 pub mod signal;
-pub mod transfer;
 pub mod r#type;
 pub mod union;
 

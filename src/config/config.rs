@@ -3,7 +3,10 @@ use std::path::{Path, PathBuf};
 use serde::Deserialize;
 
 use super::ParserError;
-use crate::{cli::Mode, Version};
+use crate::{
+    enums::{Concurrency, Mode, SafetyAssertion, StringType, Visibility},
+    version::Version,
+};
 
 #[derive(Debug, Deserialize)]
 pub struct Options {
@@ -51,7 +54,7 @@ pub struct Parameter {
     r#move: Option<bool>,
     r#const: Option<bool>,
     length_of: Option<String>,
-    string_type: Option<String>, // use enum
+    string_type: Option<StringType>,
     r#unsafe: Option<bool>,
 }
 
@@ -61,7 +64,7 @@ pub struct FunctionReturn {
     bool_return_is_error: Option<String>,
     nullable_return_is_error: Option<String>,
     use_return_for_result: Option<bool>,
-    string_type: Option<String>, // use enum
+    string_type: Option<StringType>,
     r#type: Option<String>,
 }
 
@@ -77,8 +80,8 @@ pub struct Function {
     disable_length_detect: Option<bool>,
     no_future: Option<bool>,
     rename: Option<String>,
-    assertion: Option<String>,  // Use enum
-    visibility: Option<String>, // Use enum
+    assertion: Option<SafetyAssertion>,
+    visibility: Option<Visibility>,
     #[serde(default)]
     doc_ignore_parameters: Vec<String>,
     generate_doc: Option<bool>,
@@ -105,14 +108,14 @@ pub struct Object {
     version: Option<Version>,
     cfg_condition: Option<String>,
     trust_return_value_nullability: Option<bool>,
-    visibility: Option<String>, // Use enum
+    visibility: Option<Visibility>,
     default_value: Option<String>,
     generate_doc: Option<bool>,
     #[serde(default)]
     manual_traits: Vec<String>,
     #[serde(default)]
     function: Vec<Function>,
-    concurrency: Option<String>, // Use enum
+    concurrency: Option<Concurrency>,
 }
 
 #[derive(Debug, Deserialize)]

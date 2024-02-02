@@ -5,7 +5,7 @@ use super::{
     function::Function, function_macro::FunctionMacro, interface::Interface, record::Record,
     union::Union,
 };
-use crate::Version;
+use crate::version::Version;
 
 #[derive(Debug, XmlDeserialize)]
 #[cfg_attr(test, derive(Default))]

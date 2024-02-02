@@ -1,8 +1,11 @@
-use xmlserde::{xml_serde_enum, Unparsed};
+use xmlserde::Unparsed;
 use xmlserde_derives::XmlDeserialize;
 
-use super::{r#type::Type, transfer::TransferOwnership};
-use crate::Version;
+use super::r#type::Type;
+use crate::{
+    enums::{FunctionScope, TransferOwnership},
+    version::Version,
+};
 
 #[derive(Debug, XmlDeserialize)]
 pub struct FunctionReturn {
@@ -10,16 +13,6 @@ pub struct FunctionReturn {
     transfer: Option<TransferOwnership>,
     #[xmlserde(name = b"type", ty = "child")]
     type_: Option<Type>,
-}
-
-xml_serde_enum! {
-    #[derive(Debug, Clone)]
-    FunctionScope{
-        Call => "call",
-        Notified => "notified",
-        Async => "async",
-        Forever => "forever",
-    }
 }
 
 #[derive(Debug, XmlDeserialize)]

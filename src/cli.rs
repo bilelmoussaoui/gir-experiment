@@ -2,16 +2,7 @@ use std::path::PathBuf;
 
 use clap::{Parser, ValueEnum};
 
-#[derive(ValueEnum, serde::Deserialize, Default, Debug, Copy, Clone)]
-#[clap(rename_all = "kebab_case")]
-#[serde(rename_all = "lowercase")]
-pub enum Mode {
-    Doc,
-    Normal,
-    Sys,
-    #[default]
-    NotBound,
-}
+use crate::enums::Mode;
 
 #[derive(Debug, Parser)]
 #[command(version, about, long_about = None)]

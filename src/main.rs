@@ -11,10 +11,13 @@ use crate::parser::repository::Repository;
 mod cli;
 mod codegen;
 mod config;
+mod enums;
 mod error;
 mod parser;
 mod version;
-pub use version::Version;
+
+use enums::Mode;
+use version::Version;
 
 pub struct Library {
     repository: Repository,
@@ -77,9 +80,9 @@ impl Library {
             .or(self.config.options().work_mode())
             .unwrap_or_default();
         match mode {
-            cli::Mode::Doc => todo!(),
-            cli::Mode::Normal => todo!(),
-            cli::Mode::Sys => {
+            Mode::Doc => todo!(),
+            Mode::Normal => todo!(),
+            Mode::Sys => {
                 codegen::sys::generate(
                     self,
                     std::fs::OpenOptions::new()
@@ -88,7 +91,7 @@ impl Library {
                         .open("./tests/sys/lib.rs")?,
                 );
             }
-            cli::Mode::NotBound => todo!(),
+            Mode::NotBound => todo!(),
         };
         Ok(())
     }

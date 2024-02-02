@@ -1,7 +1,7 @@
 use xmlserde_derives::XmlDeserialize;
 
 use super::function::Parameters;
-use crate::Version;
+use crate::version::Version;
 
 #[derive(Debug, XmlDeserialize)]
 pub struct FunctionMacro {

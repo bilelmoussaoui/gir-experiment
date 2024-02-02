@@ -1,6 +1,6 @@
 use xmlserde_derives::XmlDeserialize;
 
-use super::transfer::TransferOwnership;
+use crate::enums::TransferOwnership;
 
 #[derive(Debug, XmlDeserialize)]
 pub struct Property {
