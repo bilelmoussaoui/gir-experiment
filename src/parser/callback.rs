@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::function::{unwrap_parameters, FunctionReturn, Parameter};
+use super::function::{unwrap_parameters, FunctionReturn, Parameter};
 
 #[derive(Debug, Deserialize)]
 pub struct Callback {

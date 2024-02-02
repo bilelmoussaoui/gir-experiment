@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::{
+use super::{
     function::{unwrap_parameters, FunctionReturn, Parameter},
     version::Version,
 };

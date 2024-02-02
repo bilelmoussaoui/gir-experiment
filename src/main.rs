@@ -1,23 +1,6 @@
-use crate::repository::Repository;
+use crate::parser::repository::Repository;
 
-mod alias;
-mod array;
-mod callback;
-mod class;
-mod constant;
-mod enums;
-mod function;
-mod function_macro;
-mod interface;
-mod namespace;
-mod property;
-mod record;
-mod repository;
-mod signal;
-mod transfer;
-mod r#type;
-mod union;
-mod version;
+mod parser;
 
 fn main() {
     let gir_files = [

@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::r#type::Type;
+use super::r#type::Type;
 
 #[derive(Debug, Deserialize)]
 pub struct Array {

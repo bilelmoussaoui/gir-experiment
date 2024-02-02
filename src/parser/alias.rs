@@ -1,4 +1,4 @@
-use crate::r#type::Type;
+use super::r#type::Type;
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]

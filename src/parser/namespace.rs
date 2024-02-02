@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::{
+use super::{
     alias::Alias, class::Class, constant::Constant, enums::Enumeration, function::Function,
     function_macro::FunctionMacro, interface::Interface, record::Record, union::Union,
     version::Version,

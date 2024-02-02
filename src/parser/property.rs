@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::transfer::TransferOwnership;
+use super::transfer::TransferOwnership;
 
 #[derive(Debug, Deserialize)]
 pub struct Property {

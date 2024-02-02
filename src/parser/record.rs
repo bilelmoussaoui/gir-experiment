@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::{array::Array, callback::Callback, function::Function, r#type::Type, version::Version};
+use super::{array::Array, callback::Callback, function::Function, r#type::Type, version::Version};
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "lowercase")]

@@ -1,6 +1,6 @@
 use serde::{Deserialize, Deserializer};
 
-use crate::{r#type::Type, transfer::TransferOwnership, version::Version};
+use super::{r#type::Type, transfer::TransferOwnership, version::Version};
 
 #[derive(Debug, Deserialize)]
 pub struct FunctionReturn {

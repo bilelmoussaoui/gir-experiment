@@ -1,4 +1,4 @@
-use crate::{namespace::Namespace, version::Version};
+use super::{namespace::Namespace, version::Version};
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
