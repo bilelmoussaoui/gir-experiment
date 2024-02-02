@@ -1,8 +1,9 @@
 use xmlserde_derives::XmlDeserialize;
 
 use super::{
-    alias::Alias, class::Class, constant::Constant, enums::Enumeration, function::Function,
-    function_macro::FunctionMacro, interface::Interface, record::Record, union::Union,
+    alias::Alias, bitfield::BitField, class::Class, constant::Constant, enums::Enumeration,
+    function::Function, function_macro::FunctionMacro, interface::Interface, record::Record,
+    union::Union,
 };
 
 #[derive(Debug, XmlDeserialize)]
@@ -32,6 +33,8 @@ pub struct Namespace {
     records: Vec<Record>,
     #[xmlserde(name = b"enumeration", ty = "child")]
     enums: Vec<Enumeration>,
+    #[xmlserde(name = b"bitfield", ty = "child")]
+    flags: Vec<BitField>,
     #[xmlserde(name = b"class", ty = "child")]
     classes: Vec<Class>,
     #[xmlserde(name = b"interface", ty = "child")]
@@ -53,5 +56,13 @@ impl Namespace {
 
     pub fn enums(&self) -> &[Enumeration] {
         &self.enums
+    }
+
+    pub fn constants(&self) -> &[Constant] {
+        &self.constants
+    }
+
+    pub fn flags(&self) -> &[BitField] {
+        &self.flags
     }
 }

@@ -28,3 +28,15 @@ use libc::{
 
 {{ enums }}
 {% endif %}
+
+{% if constants %}
+// Constants
+
+{{ constants }}
+{% endif %}
+
+{% if flags %}
+// Flags
+
+{{ flags }}
+{% endif %}

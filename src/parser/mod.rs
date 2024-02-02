@@ -1,5 +1,6 @@
 pub mod alias;
 pub mod array;
+pub mod bitfield;
 pub mod callback;
 pub mod class;
 pub mod constant;

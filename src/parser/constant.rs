@@ -1,4 +1,5 @@
 use super::r#type::Type;
+use xmlserde::Unparsed;
 use xmlserde_derives::XmlDeserialize;
 
 #[derive(Debug, XmlDeserialize)]
@@ -9,8 +10,22 @@ pub struct Constant {
     value: String,
     #[xmlserde(name = b"c:type", ty = "attr")]
     c_type: String,
-    //#[xmlserde(name = b"doc", ty = "child")]
-    //doc: Option<String>,
+    #[xmlserde(name = b"doc", ty = "child")]
+    doc: Option<Unparsed>,
     #[xmlserde(name = b"type", ty = "child")]
     type_: Type,
+}
+
+impl Constant {
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn value(&self) -> &str {
+        &self.value
+    }
+
+    pub fn c_type(&self) -> &str {
+        &self.c_type
+    }
 }
