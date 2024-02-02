@@ -1,5 +1,4 @@
-use xmlserde::xml_serde_enum;
-use xmlserde::Unparsed;
+use xmlserde::{xml_serde_enum, Unparsed};
 use xmlserde_derives::XmlDeserialize;
 
 use super::function::{FunctionReturn, Parameters};

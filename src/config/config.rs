@@ -2,9 +2,8 @@ use std::path::{Path, PathBuf};
 
 use serde::Deserialize;
 
-use crate::{cli::Mode, Version};
-
 use super::ParserError;
+use crate::{cli::Mode, Version};
 
 #[derive(Debug, Deserialize)]
 pub struct Options {

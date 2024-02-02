@@ -1,6 +1,7 @@
-use super::r#type::Type;
 use xmlserde::Unparsed;
 use xmlserde_derives::XmlDeserialize;
+
+use super::r#type::Type;
 
 #[derive(Debug, XmlDeserialize)]
 pub struct Constant {

@@ -1,5 +1,6 @@
-use super::r#type::Type;
 use xmlserde_derives::XmlDeserialize;
+
+use super::r#type::Type;
 
 #[derive(Debug, XmlDeserialize)]
 pub struct Alias {

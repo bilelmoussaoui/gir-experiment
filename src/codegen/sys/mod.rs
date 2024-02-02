@@ -1,5 +1,6 @@
-use crate::Library;
 use serde::Serialize;
+
+use crate::Library;
 
 #[derive(Serialize)]
 pub struct Alias {
