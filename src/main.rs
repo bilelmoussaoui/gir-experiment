@@ -8,6 +8,7 @@ mod constant;
 mod enums;
 mod function;
 mod function_macro;
+mod interface;
 mod namespace;
 mod property;
 mod record;
