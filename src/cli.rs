@@ -41,3 +41,24 @@ pub struct Args {
     #[arg(long, value_name = "PATH")]
     check_gir_file: Option<PathBuf>,
 }
+
+impl Args {
+    #[cfg(test)]
+    pub fn for_test(girs_directories: &[PathBuf]) -> Self {
+        Self {
+            config: None,
+            mode: None,
+            target: None,
+            girs_directories: girs_directories.to_owned(),
+            doc_target: None,
+            make_backup: None,
+            stats: None,
+            disable_format: None,
+            check_gir_file: None,
+        }
+    }
+
+    pub fn girs_directories(&self) -> &[PathBuf] {
+        &self.girs_directories
+    }
+}

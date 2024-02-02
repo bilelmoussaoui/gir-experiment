@@ -19,6 +19,8 @@ pub mod version;
 
 #[cfg(test)]
 mod tests {
+    use std::path::PathBuf;
+
     use crate::Library;
 
     use super::*;
@@ -64,7 +66,8 @@ mod tests {
         ];
 
         for gir_file in GIR_FILES {
-            let library = Library::from_path(format!("./gir-files/{gir_file}.gir")).unwrap();
+            let args = crate::cli::Args::for_test(&[PathBuf::from("./gir-files")]);
+            let library = Library::for_package(&format!("{}.gir", gir_file), args).unwrap();
             assert_eq!(
                 gir_file,
                 format!(
