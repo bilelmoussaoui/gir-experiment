@@ -1,4 +1,4 @@
-use std::path::Path;
+use std::{collections::HashMap, path::Path};
 
 use crate::parser::repository::Repository;
 
@@ -6,15 +6,30 @@ mod parser;
 
 pub struct Library {
     repository: Repository,
+    namespaces: HashMap<String, Repository>,
 }
 
 impl Library {
     pub fn from_path(path: impl AsRef<Path>) -> Result<Self, ()> {
-        println!("Parsing {}", path.as_ref().display());
-        let content = std::fs::read_to_string(path).unwrap();
-        let repository = xmlserde::xml_deserialize_from_str(&content).unwrap();
-        //println!("{:#?}", repository);
-        Ok(Self { repository })
+        let path = path.as_ref();
+        // For now assume we have all the gir-files in the same directory
+        let gir_files_dir = path.parent().unwrap();
+        let main_namespace = Repository::from_path(path)?;
+        let mut namespaces = HashMap::new();
+        for include in main_namespace.namespace_includes() {
+            if namespaces.contains_key(&include.as_package()) {
+                continue;
+            }
+
+            let gir_file = gir_files_dir.join(include.as_package_file());
+            let namespace = Repository::from_path(&gir_file)?;
+            namespaces.insert(include.as_package(), namespace);
+        }
+
+        Ok(Self {
+            repository: main_namespace,
+            namespaces,
+        })
     }
 }
 
@@ -57,11 +72,11 @@ fn main() {
         "xrandr-1.3",
     ];
 
-    for gir_file in gir_files {
-        //    let gir_file = "Gtk-3.0";
-        let library = Library::from_path(format!("./gir-files/{gir_file}.gir")).unwrap();
-        //println!("Hello, world! {:#?}", repo);
-    }
+    //for gir_file in gir_files {
+    //    //    let gir_file = "Gtk-3.0";
+    //    let _library = Library::from_path(format!("./gir-files/{gir_file}.gir")).unwrap();
+    //    //println!("Hello, world! {:#?}", repo);
+    //}
 
-    //let library = Library::from_path("./gir-files/Gtk-4.0.gir").unwrap();
+    let library = Library::from_path("./gir-files/Gtk-4.0.gir").unwrap();
 }

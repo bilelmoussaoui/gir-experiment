@@ -2,10 +2,7 @@ use xmlserde::xml_serde_enum;
 use xmlserde::Unparsed;
 use xmlserde_derives::XmlDeserialize;
 
-use super::{
-    function::{FunctionReturn, Parameters},
-    version::Version,
-};
+use super::function::{FunctionReturn, Parameters};
 
 xml_serde_enum! {
     #[derive(Debug, Clone)]

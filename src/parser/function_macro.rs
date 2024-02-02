@@ -1,6 +1,6 @@
 use xmlserde_derives::XmlDeserialize;
 
-use super::{function::Parameters, version::Version};
+use super::function::Parameters;
 
 #[derive(Debug, XmlDeserialize)]
 pub struct FunctionMacro {

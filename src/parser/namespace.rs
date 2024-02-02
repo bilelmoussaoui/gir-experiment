@@ -3,7 +3,6 @@ use xmlserde_derives::XmlDeserialize;
 use super::{
     alias::Alias, class::Class, constant::Constant, enums::Enumeration, function::Function,
     function_macro::FunctionMacro, interface::Interface, record::Record, union::Union,
-    version::Version,
 };
 
 #[derive(Debug, XmlDeserialize)]

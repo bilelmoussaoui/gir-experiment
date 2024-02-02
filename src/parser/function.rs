@@ -1,7 +1,7 @@
 use xmlserde::{xml_serde_enum, Unparsed};
 use xmlserde_derives::XmlDeserialize;
 
-use super::{r#type::Type, transfer::TransferOwnership, version::Version};
+use super::{r#type::Type, transfer::TransferOwnership};
 
 #[derive(Debug, XmlDeserialize)]
 pub struct FunctionReturn {
