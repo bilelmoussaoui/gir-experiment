@@ -65,4 +65,8 @@ impl Namespace {
     pub fn flags(&self) -> &[BitField] {
         &self.flags
     }
+
+    pub fn records(&self) -> &[Record] {
+        &self.records
+    }
 }

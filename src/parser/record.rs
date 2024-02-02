@@ -29,6 +29,24 @@ pub struct Field {
     inner: InnerField,
 }
 
+impl Field {
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn is_type(&self) -> bool {
+        matches!(self.inner, InnerField::Type(_))
+    }
+
+    pub fn as_type(&self) -> &Type {
+        if let InnerField::Type(t) = &self.inner {
+            t
+        } else {
+            unreachable!()
+        }
+    }
+}
+
 #[derive(Debug, XmlDeserialize)]
 pub struct Record {
     #[xmlserde(name = b"name", ty = "attr")]
@@ -63,4 +81,24 @@ pub struct Record {
     constructors: Vec<Function>,
 }
 
-impl Record {}
+impl Record {
+    pub fn c_type(&self) -> Option<&str> {
+        self.c_type.as_deref()
+    }
+
+    pub fn is_disguised(&self) -> bool {
+        self.disguised.unwrap_or(false)
+    }
+
+    pub fn is_opaque(&self) -> bool {
+        self.opaque.unwrap_or(false)
+    }
+
+    pub fn is_gtype_struct(&self) -> bool {
+        self.is_gtype_struct_for.is_some()
+    }
+
+    pub fn fields(&self) -> &[Field] {
+        &self.fields
+    }
+}

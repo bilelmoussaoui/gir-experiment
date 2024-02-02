@@ -12,6 +12,10 @@ pub fn generate(library: &Library) {
         .unwrap();
     tera.add_template_file("src/templates/sys/member.md", Some("member"))
         .unwrap();
+    tera.add_template_file("src/templates/sys/record-opaque.md", Some("record-opaque"))
+        .unwrap();
+    tera.add_template_file("src/templates/sys/record.md", Some("record"))
+        .unwrap();
 
     let mut aliases = vec![];
     for alias in library.repository.namespace().aliases() {
@@ -65,10 +69,40 @@ pub fn generate(library: &Library) {
         flags.push("".to_owned());
     }
 
+    let mut records = vec![];
+    for record in library.repository.namespace().records() {
+        if record.is_opaque() {
+            let mut context = tera::Context::new();
+            context.insert("type", record.c_type().unwrap());
+            context.insert("is_disguised", &record.is_disguised());
+            records.push(tera.render("record-opaque", &context).unwrap());
+        } else if record.is_gtype_struct() {
+        } else {
+            let mut context = tera::Context::new();
+            context.insert("type", record.c_type().unwrap());
+            let mut fields = vec![];
+            for field in record.fields() {
+                let mut field_context = tera::Context::new();
+                if field.is_type() {
+                    let ty = field.as_type();
+                    field_context.insert("name", field.name());
+                    field_context.insert("type", ty.c_type().unwrap());
+                    fields.push(
+                        tera.render_str("pub {{name}}: {{type}},", &field_context)
+                            .unwrap(),
+                    );
+                }
+            }
+            context.insert("fields", &fields);
+            records.push(tera.render("record", &context).unwrap());
+        }
+    }
+
     let mut context = tera::Context::new();
     context.insert("aliases", &aliases.join("\n"));
     context.insert("enums", &enums.join("\n"));
     context.insert("constants", &constants.join("\n"));
     context.insert("flags", &flags.join("\n"));
+    context.insert("records", &records.join("\n"));
     println!("{}", tera.render("lib.rs", &context).unwrap());
 }

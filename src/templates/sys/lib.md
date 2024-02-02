@@ -40,3 +40,9 @@ use libc::{
 
 {{ flags }}
 {% endif %}
+
+{% if records %}
+// Records
+
+{{ records }}
+{% endif %}
