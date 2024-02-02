@@ -16,6 +16,7 @@ pub mod enums;
 pub mod function;
 pub mod function_macro;
 pub mod interface;
+pub mod member;
 pub mod namespace;
 pub mod property;
 pub mod record;
