@@ -20,36 +20,73 @@ use libc::{
 {% if aliases %}
 // Aliases
 
-{{ aliases }}
-{% endif %}
+{%- for alias in aliases %}
+pub type {{alias.target_type}} = {{alias.dest_type}};
+{% endfor -%}
+{% endif -%}
 
 {% if enums %}
 // Enums
 
-{{ enums }}
-{% endif %}
+{%- for enum in enums %}
+pub type {{enum.target_type}} = {{enum.dest_type}};
+{% for member in enum.members -%}
+pub const {{member.name}}: {{enum.target_type}} = {{member.value}};
+{% endfor -%}
+{% endfor -%}
+{% endif -%}
 
 {% if constants %}
 // Constants
 
-{{ constants }}
-{% endif %}
+{%- for constant in constants %}
+pub const {{constant.name}}: {{constant.type}} = {{constant.value}};
+{%- endfor -%}
+{% endif -%}
 
 {% if flags %}
 // Flags
 
-{{ flags }}
-{% endif %}
+{%- for flag in flags %}
+pub type {{flag.target_type}} = {{flag.dest_type}};
+{% for member in flag.members -%}
+pub const {{member.name}}: {{flag.target_type}} = {{member.value}};
+{% endfor -%}
+{% endfor -%}
+{% endif -%}
 
 {% if records %}
 // Records
 
-{{ records }}
-{% endif %}
+{% for record in records -%}
+
+{% if record.is_opaque %}
+#[repr(C)]
+pub struct {% if record.is_disguised %}_{{record.type}} {% else %}{{record.type}} {% endif %} {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
+
+{% if record.is_disguised -%}
+pub type {{record.type}} = _{{record.type}};
+{% else -%}
+
+impl ::std::fmt::Debug for {{record.type}} {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("{{record.type}} @ {self:p}"))
+            .finish()
+    }
+}
+{% endif -%}
+
+{% endif -%}
+
+{% endfor -%}
+{% endif -%}
 
 {% if link_name %}
 #[link(name = "{{link_name}}")]
-{% endif %}
+{% endif -%}
 extern "C" {
 
 }

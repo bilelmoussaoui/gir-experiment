@@ -298,6 +298,7 @@ name = "gir2"
 version = "0.1.0"
 dependencies = [
  "clap",
+ "serde",
  "tera",
  "xmlserde",
  "xmlserde_derives",

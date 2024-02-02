@@ -1,4 +1,38 @@
 use crate::Library;
+use serde::Serialize;
+
+#[derive(Serialize)]
+pub struct Alias {
+    target_type: String,
+    dest_type: String,
+}
+
+#[derive(Serialize)]
+pub struct Member {
+    name: String,
+    value: String,
+}
+
+#[derive(Serialize)]
+pub struct Enum {
+    target_type: String,
+    dest_type: String,
+    members: Vec<Member>,
+}
+
+#[derive(Serialize)]
+pub struct Constant {
+    name: String,
+    r#type: String,
+    value: String,
+}
+
+#[derive(Serialize)]
+struct Record {
+    r#type: String,
+    is_disguised: bool,
+    is_opaque: bool,
+}
 
 pub fn generate(library: &Library, dest: impl std::io::Write) {
     println!(
@@ -8,102 +42,73 @@ pub fn generate(library: &Library, dest: impl std::io::Write) {
     let mut tera = tera::Tera::default();
     tera.add_template_file("src/templates/sys/lib.md", Some("lib.rs"))
         .unwrap();
-    tera.add_template_file("src/templates/sys/alias.md", Some("alias"))
-        .unwrap();
-    tera.add_template_file("src/templates/sys/member.md", Some("member"))
-        .unwrap();
-    tera.add_template_file("src/templates/sys/record-opaque.md", Some("record-opaque"))
-        .unwrap();
-    tera.add_template_file("src/templates/sys/record.md", Some("record"))
-        .unwrap();
 
     let mut aliases = vec![];
     for alias in library.repository.namespace().aliases() {
-        let mut context = tera::Context::new();
-        context.insert("target_type", alias.c_type());
-        // TODO: handle the crate name the dest type
-        context.insert("dest_type", alias.ty().c_type().unwrap());
-        aliases.push(tera.render("alias", &context).unwrap());
+        aliases.push(Alias {
+            target_type: alias.c_type().to_owned(),
+            dest_type: alias.ty().c_type().unwrap().to_owned(),
+        });
     }
 
     let mut enums = vec![];
     for enumerator in library.repository.namespace().enums() {
-        let mut context = tera::Context::new();
-        context.insert("target_type", enumerator.c_type());
-        context.insert("dest_type", "c_int");
-        enums.push(tera.render("alias", &context).unwrap());
-        // TODO: handle the crate name the dest type
+        let mut members = vec![];
         for member in enumerator.members() {
-            let mut context = tera::Context::new();
-            context.insert("name", member.c_identifier());
-            context.insert("type", enumerator.c_type());
-            context.insert("value", member.value());
-            enums.push(tera.render("member", &context).unwrap());
+            members.push(Member {
+                name: member.c_identifier().to_owned(),
+                value: member.value().to_owned(),
+            });
         }
-        enums.push("".to_owned());
+        enums.push(Enum {
+            target_type: enumerator.c_type().to_owned(),
+            // TODO: handle the crate name the dest type
+            dest_type: "c_int".to_owned(),
+            members,
+        });
     }
 
     let mut constants = vec![];
     for constant in library.repository.namespace().constants() {
-        let mut context = tera::Context::new();
-        context.insert("name", constant.c_type());
-        context.insert("type", ""); // TODO: handle null terminated strings
-        context.insert("value", constant.value());
-        constants.push(tera.render("member", &context).unwrap());
+        constants.push(Constant {
+            name: constant.c_type().to_owned(),
+            r#type: "".to_owned(), // TODO: handle null terminated strings
+            value: constant.value().to_owned(),
+        });
     }
 
     let mut flags = vec![];
     for flag in library.repository.namespace().flags() {
-        let mut context = tera::Context::new();
-        context.insert("target_type", flag.c_type());
-        context.insert("dest_type", "c_uint");
-        flags.push(tera.render("alias", &context).unwrap());
-        // TODO: handle the crate name the dest type
+        let mut members = vec![];
         for member in flag.members() {
-            let mut context = tera::Context::new();
-            context.insert("name", member.c_identifier());
-            context.insert("type", flag.c_type());
-            context.insert("value", member.value());
-            flags.push(tera.render("member", &context).unwrap());
+            members.push(Member {
+                name: member.c_identifier().to_owned(),
+                value: member.value().to_owned(),
+            });
         }
-        flags.push("".to_owned());
+        flags.push(Enum {
+            target_type: flag.c_type().to_owned(),
+            // TODO: handle the crate name the dest type
+            dest_type: "c_uint".to_owned(),
+            members,
+        });
     }
 
     let mut records = vec![];
     for record in library.repository.namespace().records() {
-        if record.is_opaque() {
-            let mut context = tera::Context::new();
-            context.insert("type", record.c_type().unwrap());
-            context.insert("is_disguised", &record.is_disguised());
-            records.push(tera.render("record-opaque", &context).unwrap());
-        } else if record.is_gtype_struct() {
-        } else {
-            let mut context = tera::Context::new();
-            context.insert("type", record.c_type().unwrap());
-            let mut fields = vec![];
-            for field in record.fields() {
-                let mut field_context = tera::Context::new();
-                if field.is_type() {
-                    let ty = field.as_type();
-                    field_context.insert("name", field.name());
-                    field_context.insert("type", ty.c_type().unwrap());
-                    fields.push(
-                        tera.render_str("pub {{name}}: {{type}},", &field_context)
-                            .unwrap(),
-                    );
-                }
-            }
-            context.insert("fields", &fields);
-            records.push(tera.render("record", &context).unwrap());
-        }
+        records.push(Record {
+            r#type: record.c_type().unwrap().to_owned(),
+            is_disguised: record.is_disguised(),
+            is_opaque: record.is_opaque(),
+        });
     }
 
     let mut context = tera::Context::new();
-    context.insert("aliases", &aliases.join("\n"));
-    context.insert("enums", &enums.join("\n"));
-    context.insert("constants", &constants.join("\n"));
-    context.insert("flags", &flags.join("\n"));
-    context.insert("records", &records.join("\n"));
+    context.insert("aliases", &aliases);
+    context.insert("enums", &enums);
+    context.insert("constants", &constants);
+    context.insert("flags", &flags);
+    context.insert("records", &records);
     context.insert("link_name", &library.repository.namespace().link_name());
     tera.render_to("lib.rs", &context, dest).unwrap();
 }
