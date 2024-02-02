@@ -45,14 +45,18 @@ pub(super) fn unwrap_parameters<'de, D>(deserializer: D) -> Result<Vec<Parameter
 where
     D: Deserializer<'de>,
 {
-    /// Represents <list>...</list>
     #[derive(Deserialize)]
     struct Parameters {
-        // default allows empty list
+        #[serde(default, rename = "instance-parameter")]
+        instance_parameter: Option<Parameter>,
         #[serde(default)]
         parameter: Vec<Parameter>,
     }
-    Ok(Parameters::deserialize(deserializer)?.parameter)
+    let mut params = Parameters::deserialize(deserializer)?;
+    if let Some(instance_param) = params.instance_parameter {
+        params.parameter.insert(0, instance_param);
+    }
+    Ok(params.parameter)
 }
 
 #[derive(Debug, Deserialize)]
