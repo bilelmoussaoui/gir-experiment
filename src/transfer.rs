@@ -5,5 +5,6 @@ use serde::Deserialize;
 pub enum TransferOwnership {
     #[default]
     None,
+    Container,
     Full,
 }

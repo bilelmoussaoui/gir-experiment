@@ -16,6 +16,7 @@ pub enum FunctionScope {
     Call,
     Notified,
     Async,
+    Forever,
 }
 
 #[derive(Debug, Deserialize)]

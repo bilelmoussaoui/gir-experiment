@@ -5,11 +5,11 @@ pub struct Member {
     //#[serde(rename = "@name")]
     //name: String,
     #[serde(rename = "@value")]
-    value: u32,
+    value: String,
     #[serde(rename = "@identifier")]
     c_identifier: String,
-    #[serde(rename = "@nick")]
-    nick: String,
+    #[serde(default, rename = "@nick")]
+    nick: Option<String>,
     #[serde(default)]
     doc: Option<String>,
 }
@@ -21,9 +21,9 @@ pub struct Enumeration {
     #[serde(rename = "@type")]
     c_type: String,
     #[serde(rename = "@type-name")]
-    type_name: String,
+    type_name: Option<String>,
     #[serde(rename = "@get-type")]
-    get_type: String,
+    get_type: Option<String>,
     #[serde(default)]
     doc: Option<String>,
     #[serde(default, rename = "member")]

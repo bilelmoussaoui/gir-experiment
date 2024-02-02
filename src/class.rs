@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::function::Function;
+use crate::{function::Function, property::Property};
 
 #[derive(Debug, Deserialize)]
 pub struct Class {
@@ -34,4 +34,6 @@ pub struct Class {
     functions: Vec<Function>,
     #[serde(default, rename = "method")]
     methods: Vec<Function>,
+    #[serde(default, rename = "property")]
+    properties: Vec<Property>,
 }

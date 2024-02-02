@@ -8,6 +8,6 @@ pub struct Callback {
     name: String,
     #[serde(rename = "return-value")]
     return_value: FunctionReturn,
-    #[serde(deserialize_with = "unwrap_parameters")]
+    #[serde(default, deserialize_with = "unwrap_parameters")]
     parameters: Vec<Parameter>,
 }
