@@ -36,4 +36,6 @@ pub struct Class {
     methods: Vec<Function>,
     #[serde(default, rename = "property")]
     properties: Vec<Property>,
+    #[serde(default, rename = "virtual-method")]
+    virtual_methods: Vec<Function>,
 }

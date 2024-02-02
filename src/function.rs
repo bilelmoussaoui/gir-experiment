@@ -63,8 +63,8 @@ where
 pub struct Function {
     #[serde(rename = "@name")]
     name: String,
-    #[serde(rename = "@identifier")]
-    c_identifier: String,
+    #[serde(default, rename = "@identifier")]
+    c_identifier: Option<String>,
     #[serde(default, rename = "@version")]
     version: Option<Version>,
     #[serde(default, rename = "@deprecated-version")]
