@@ -4,6 +4,6 @@ use serde::Deserialize;
 pub struct Type {
     #[serde(rename = "@name")]
     name: String,
-    #[serde(rename = "@type")]
-    c_type: String,
+    #[serde(default, rename = "@type")]
+    c_type: Option<String>,
 }

@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::{function::Function, property::Property};
+use crate::{function::Function, property::Property, signal::Signal};
 
 #[derive(Debug, Deserialize)]
 pub struct Class {
@@ -36,6 +36,8 @@ pub struct Class {
     methods: Vec<Function>,
     #[serde(default, rename = "property")]
     properties: Vec<Property>,
+    #[serde(default, rename = "signal")]
+    signals: Vec<Signal>,
     #[serde(default, rename = "virtual-method")]
     virtual_methods: Vec<Function>,
 }

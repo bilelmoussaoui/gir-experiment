@@ -12,6 +12,7 @@ mod namespace;
 mod property;
 mod record;
 mod repository;
+mod signal;
 mod transfer;
 mod r#type;
 mod union;
