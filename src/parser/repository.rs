@@ -59,4 +59,8 @@ impl Repository {
     pub fn namespace_includes(&self) -> &[NamespaceInclude] {
         &self.includes
     }
+
+    pub fn namespace(&self) -> &Namespace {
+        &self.namespace
+    }
 }

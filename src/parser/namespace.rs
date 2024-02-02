@@ -37,3 +37,13 @@ pub struct Namespace {
     #[xmlserde(name = b"interface", ty = "child")]
     interfaces: Vec<Interface>,
 }
+
+impl Namespace {
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn version(&self) -> &str {
+        &self.version
+    }
+}
