@@ -75,6 +75,8 @@ pub struct Function {
     get_property: Option<String>,
     #[serde(default, rename = "@set-property")]
     set_property: Option<String>,
+    #[serde(default, rename = "@introspectable")]
+    introspectable: Option<bool>,
     #[serde(rename = "return-value")]
     return_value: FunctionReturn,
     #[serde(default, deserialize_with = "unwrap_parameters")]

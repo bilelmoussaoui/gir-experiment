@@ -56,4 +56,8 @@ pub struct Record {
     functions: Vec<Function>,
     #[serde(default, rename = "method")]
     methods: Vec<Function>,
+    #[serde(default, rename = "constructor")]
+    constructors: Vec<Function>,
 }
+
+impl Record {}

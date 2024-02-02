@@ -10,14 +10,15 @@ use crate::{
 pub enum Emission {
     First,
     Last,
+    Cleanup,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct Signal {
     #[serde(rename = "@name")]
     name: String,
-    #[serde(rename = "@when")]
-    when: Emission,
+    #[serde(default, rename = "@when")]
+    when: Option<Emission>,
     #[serde(default, rename = "@version")]
     version: Option<Version>,
     #[serde(default, rename = "doc")]

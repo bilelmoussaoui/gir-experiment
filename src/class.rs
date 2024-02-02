@@ -30,6 +30,8 @@ pub struct Class {
     get_value_func: Option<String>,
     #[serde(default)]
     doc: Option<String>,
+    #[serde(default, rename = "constructor")]
+    constructors: Vec<Function>,
     #[serde(default, rename = "function")]
     functions: Vec<Function>,
     #[serde(default, rename = "method")]

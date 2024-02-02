@@ -26,3 +26,9 @@ pub struct Repository {
     packages: Vec<Package>,
     namespace: Namespace,
 }
+
+impl Repository {
+    pub fn namespace(&self) -> &Namespace {
+        &self.namespace
+    }
+}
