@@ -91,6 +91,7 @@ impl Library {
 }
 
 fn main() {
+    tracing_subscriber::fmt::init();
     let args = Args::parse();
     let library = Library::new(args).unwrap();
     library.generate().unwrap();

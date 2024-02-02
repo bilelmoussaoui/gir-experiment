@@ -50,7 +50,7 @@ pub struct Repository {
 
 impl Repository {
     pub fn from_path(path: impl AsRef<Path>) -> Result<Self, ParserError> {
-        println!("Parsing {}", path.as_ref().display());
+        tracing::info!("Parsing {}", path.as_ref().display());
         let content = std::fs::read_to_string(path)?;
         let repository = xmlserde::xml_deserialize_from_str(&content).map_err(ParserError::Xml)?;
         Ok(repository)
