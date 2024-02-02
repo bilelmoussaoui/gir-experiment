@@ -11,6 +11,8 @@ mod codegen;
 mod config;
 mod error;
 mod parser;
+mod version;
+pub use version::Version;
 
 pub struct Library {
     repository: Repository,

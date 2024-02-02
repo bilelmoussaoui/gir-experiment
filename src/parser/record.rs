@@ -2,6 +2,7 @@ use xmlserde::Unparsed;
 use xmlserde_derives::XmlDeserialize;
 
 use super::{array::Array, callback::Callback, function::Function, r#type::Type};
+use crate::Version;
 
 #[derive(Debug, XmlDeserialize)]
 pub enum InnerField {
@@ -58,11 +59,11 @@ pub struct Record {
     #[xmlserde(name = b"opaque", ty = "attr")]
     opaque: Option<bool>,
     #[xmlserde(name = b"version", ty = "attr")]
-    version: Option<String>,
+    version: Option<Version>,
     #[xmlserde(name = b"deprecated", ty = "attr")]
     deprecated: Option<bool>,
     #[xmlserde(name = b"deprecated-version", ty = "attr")]
-    deprecated_version: Option<String>,
+    deprecated_version: Option<Version>,
     #[xmlserde(name = b"glib:is-gtype-struct-for", ty = "attr")]
     is_gtype_struct_for: Option<String>,
     #[xmlserde(name = b"glib:get-type", ty = "attr")]

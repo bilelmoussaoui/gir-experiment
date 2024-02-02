@@ -24,7 +24,6 @@ pub mod signal;
 pub mod transfer;
 pub mod r#type;
 pub mod union;
-pub mod version;
 
 #[cfg(test)]
 mod tests {

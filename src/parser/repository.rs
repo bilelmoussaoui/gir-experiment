@@ -1,6 +1,7 @@
 use std::path::Path;
 
-use super::{namespace::Namespace, version::Version, ParserError};
+use super::{namespace::Namespace, ParserError};
+use crate::Version;
 use xmlserde_derives::XmlDeserialize;
 
 #[derive(Debug, XmlDeserialize)]
@@ -8,7 +9,7 @@ pub struct NamespaceInclude {
     #[xmlserde(name = b"name", ty = "attr")]
     name: String,
     #[xmlserde(name = b"version", ty = "attr")]
-    version: String,
+    version: Version,
 }
 
 impl NamespaceInclude {
@@ -37,7 +38,7 @@ pub struct Package {
 #[xmlserde(root = b"repository")]
 pub struct Repository {
     #[xmlserde(name = b"version", ty = "attr")]
-    version: String,
+    version: Version,
     #[xmlserde(name = b"include", ty = "child")]
     includes: Vec<NamespaceInclude>,
     #[xmlserde(name = b"c:include", ty = "child")]

@@ -2,15 +2,15 @@ use std::path::{Path, PathBuf};
 
 use serde::Deserialize;
 
-use crate::cli::Mode;
+use crate::{cli::Mode, Version};
 
 use super::ParserError;
 
 #[derive(Debug, Deserialize)]
 pub struct Options {
     library: String,
-    version: String,
-    min_cfg_version: String,
+    version: Version,
+    min_cfg_version: Version,
     target_path: PathBuf,
     #[serde(default)]
     girs_directories: Vec<PathBuf>,
@@ -72,7 +72,7 @@ pub struct Function {
     pattern: Option<String>,
     manual: Option<bool>,
     ignore: Option<bool>,
-    version: Option<String>,
+    version: Option<Version>,
     cfg_condition: Option<String>,
     doc_hidden: Option<bool>,
     disable_length_detect: Option<bool>,
@@ -103,7 +103,7 @@ pub struct Object {
     fundamental_type: Option<bool>,
     exhaustive: Option<bool>,
     module_name: Option<String>,
-    version: Option<String>,
+    version: Option<Version>,
     cfg_condition: Option<String>,
     trust_return_value_nullability: Option<bool>,
     visibility: Option<String>, // Use enum

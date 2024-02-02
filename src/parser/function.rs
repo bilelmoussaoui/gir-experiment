@@ -2,6 +2,7 @@ use xmlserde::{xml_serde_enum, Unparsed};
 use xmlserde_derives::XmlDeserialize;
 
 use super::{r#type::Type, transfer::TransferOwnership};
+use crate::Version;
 
 #[derive(Debug, XmlDeserialize)]
 pub struct FunctionReturn {
@@ -58,9 +59,9 @@ pub struct Function {
     #[xmlserde(name = b"identifier", ty = "attr")]
     c_identifier: Option<String>,
     #[xmlserde(name = b"version", ty = "attr")]
-    version: Option<String>,
+    version: Option<Version>,
     #[xmlserde(name = b"deprecated-version", ty = "attr")]
-    deprecated_version: Option<String>,
+    deprecated_version: Option<Version>,
     #[xmlserde(name = b"deprecated", ty = "attr")]
     deprecated: Option<bool>,
     #[xmlserde(name = b"get-property", ty = "attr")]

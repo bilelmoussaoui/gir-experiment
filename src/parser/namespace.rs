@@ -5,6 +5,7 @@ use super::{
     function::Function, function_macro::FunctionMacro, interface::Interface, record::Record,
     union::Union,
 };
+use crate::Version;
 
 #[derive(Debug, XmlDeserialize)]
 #[cfg_attr(test, derive(Default))]
@@ -13,7 +14,7 @@ pub struct Namespace {
     #[xmlserde(name = b"name", ty = "attr")]
     name: String,
     #[xmlserde(name = b"version", ty = "attr")]
-    version: String,
+    version: Version,
     #[xmlserde(name = b"c:identifier-prefixes", ty = "attr")]
     c_identifier_prefix: String,
     #[xmlserde(name = b"c:symbol-prefixes", ty = "attr")]
@@ -47,7 +48,7 @@ impl Namespace {
         &self.name
     }
 
-    pub fn version(&self) -> &str {
+    pub fn version(&self) -> &Version {
         &self.version
     }
 

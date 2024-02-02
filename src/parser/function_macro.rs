@@ -1,6 +1,7 @@
 use xmlserde_derives::XmlDeserialize;
 
 use super::function::Parameters;
+use crate::Version;
 
 #[derive(Debug, XmlDeserialize)]
 pub struct FunctionMacro {
@@ -11,7 +12,7 @@ pub struct FunctionMacro {
     #[xmlserde(name = b"introspectable", ty = "attr")]
     introspectable: bool,
     #[xmlserde(name = b"version", ty = "attr")]
-    version: Option<String>,
+    version: Option<Version>,
     #[xmlserde(name = b"parameters", ty = "child")]
     parameters: Option<Parameters>,
 }

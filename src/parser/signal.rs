@@ -3,6 +3,7 @@ use xmlserde::Unparsed;
 use xmlserde_derives::XmlDeserialize;
 
 use super::function::{FunctionReturn, Parameters};
+use crate::Version;
 
 xml_serde_enum! {
     #[derive(Debug, Clone)]
@@ -20,7 +21,7 @@ pub struct Signal {
     #[xmlserde(name = b"when", ty = "attr")]
     when: Option<Emission>,
     #[xmlserde(name = b"version", ty = "attr")]
-    version: Option<String>,
+    version: Option<Version>,
     #[xmlserde(name = b"doc", ty = "child")]
     doc: Option<Unparsed>,
     #[xmlserde(name = b"return-value", ty = "child")]
