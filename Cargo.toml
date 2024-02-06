@@ -1,17 +1,13 @@
-[package]
-name = "gir2"
+[workspace]
+resolver = "2"
+members = [
+    "codegen",
+    "parser"
+]
+
+[workspace.package]
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-clap = { version = "4.4.6", features = [ "cargo", "derive" ] }
-serde = { version = "1.0", features = ["derive"] }
-xmlserde = "0.7"
-xmlserde_derives = "0.7"
-tera = "1"
-thiserror = "1"
-toml = "0.8"
-tracing = "0.1"
-tracing-subscriber = "0.3"
+[workspace.dependencies]
+parser = {package = "gir-parser", path ="./parser"}
