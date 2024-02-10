@@ -1,14 +1,12 @@
 [package]
-name = "gir-codegen"
+name = "gir-config"
 version.workspace = true
 edition.workspace = true
 
 [dependencies]
 clap = { version = "4.4.6", features = [ "cargo", "derive" ] }
-config.workspace = true
 parser.workspace = true
 serde = { version = "1.0", features = ["derive"] }
-tera = "1"
 thiserror = "1"
+toml = "0.8"
 tracing = "0.1"
-tracing-subscriber = "0.3"

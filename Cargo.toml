@@ -2,6 +2,7 @@
 resolver = "2"
 members = [
     "codegen",
+    "config",
     "parser"
 ]
 
@@ -10,4 +11,5 @@ version = "0.1.0"
 edition = "2021"
 
 [workspace.dependencies]
+config = {package = "gir-config", path ="./config"}
 parser = {package = "gir-parser", path ="./parser"}

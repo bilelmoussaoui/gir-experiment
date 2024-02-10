@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 #[derive(Debug, thiserror::Error)]
 pub enum ParserError {
     #[error("I/O operation failed")]
@@ -6,4 +8,9 @@ pub enum ParserError {
     Toml(#[from] toml::de::Error),
 }
 
-pub mod config;
+mod config;
+pub use config::Config;
+mod enums;
+pub use enums::{Concurrency, Mode, SafetyAssertion, StringType, Visibility};
+mod function;
+mod object;

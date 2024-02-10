@@ -304,13 +304,25 @@ name = "gir-codegen"
 version = "0.1.0"
 dependencies = [
  "clap",
+ "gir-config",
  "gir-parser",
  "serde",
  "tera",
  "thiserror",
- "toml",
  "tracing",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "gir-config"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "gir-parser",
+ "serde",
+ "thiserror",
+ "toml",
+ "tracing",
 ]
 
 [[package]]

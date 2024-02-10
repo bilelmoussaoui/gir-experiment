@@ -1,8 +1,7 @@
 use std::path::PathBuf;
 
 use clap::{Parser, ValueEnum};
-
-use crate::enums::Mode;
+use config::Mode;
 
 #[derive(Debug, Parser)]
 #[command(version, about, long_about = None)]

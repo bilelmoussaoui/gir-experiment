@@ -4,16 +4,14 @@ use std::{collections::HashMap, path::PathBuf};
 
 use clap::Parser;
 use cli::Args;
-use config::config::Config;
+use config::Config;
 use parser::{namespace, prelude::*, repository::Repository};
 
 mod cli;
 mod codegen;
-mod config;
-mod enums;
 mod error;
 
-use enums::Mode;
+use config::Mode;
 
 pub struct Library {
     repository: Repository,
