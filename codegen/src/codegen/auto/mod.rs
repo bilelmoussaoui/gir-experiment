@@ -1,5 +1,7 @@
 use std::path::Path;
 
+mod aliases;
+mod constants;
 mod enums;
 use crate::{Library, Result};
 
@@ -27,6 +29,11 @@ pub fn generate(library: &Library, dest_dir: impl AsRef<Path>) -> Result<()> {
     let mut tera = tera::Tera::default();
     tera.add_template_file("codegen/src/templates/auto/mod.rs", Some("mod.rs"))?;
     tera.add_template_file("codegen/src/templates/auto/enums.rs", Some("enums.rs"))?;
+    tera.add_template_file("codegen/src/templates/auto/alias.rs", Some("alias.rs"))?;
+    tera.add_template_file(
+        "codegen/src/templates/auto/constants.rs",
+        Some("constants.rs"),
+    )?;
 
     let dest = std::fs::OpenOptions::new()
         .create(true)
@@ -39,6 +46,16 @@ pub fn generate(library: &Library, dest_dir: impl AsRef<Path>) -> Result<()> {
         .write(true)
         .open(src_dir.join("enums.rs"))?;
     enums::generate(&tera, library, dest)?;
+    let dest = std::fs::OpenOptions::new()
+        .create(true)
+        .write(true)
+        .open(src_dir.join("alias.rs"))?;
+    aliases::generate(&tera, library, dest)?;
+    let dest = std::fs::OpenOptions::new()
+        .create(true)
+        .write(true)
+        .open(src_dir.join("constants.rs"))?;
+    constants::generate(&tera, library, dest)?;
 
     Ok(())
 }
