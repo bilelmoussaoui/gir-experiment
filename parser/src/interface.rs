@@ -2,9 +2,19 @@ use xmlserde::Unparsed;
 use xmlserde_derives::XmlDeserialize;
 
 use crate::{
-    attribute::Attribute, callback::Callback, class::Implements, constant::Constant, field::Field,
-    function::Function, method::Method, prelude::*, property::Property, signal::Signal,
-    version::Version, virtual_method::VirtualMethod, Stability,
+    attribute::Attribute,
+    callback::Callback,
+    class::Implements,
+    constant::Constant,
+    field::Field,
+    function::{Function, FunctionInline},
+    method::{Method, MethodInline},
+    prelude::*,
+    property::Property,
+    signal::Signal,
+    version::Version,
+    virtual_method::VirtualMethod,
+    Stability,
 };
 
 #[derive(Debug, XmlDeserialize)]
@@ -62,11 +72,17 @@ pub struct Interface {
     #[xmlserde(name = b"function", ty = "child")]
     functions: Vec<Function>,
 
+    #[xmlserde(name = b"function-inline", ty = "child")]
+    inline_functions: Vec<FunctionInline>,
+
     #[xmlserde(name = b"constructor", ty = "child")]
     constructors: Vec<Function>,
 
     #[xmlserde(name = b"method", ty = "child")]
     methods: Vec<Method>,
+
+    #[xmlserde(name = b"inline-methods", ty = "child")]
+    inline_methods: Vec<MethodInline>,
 
     #[xmlserde(name = b"virtual-method", ty = "child")]
     virtual_methods: Vec<VirtualMethod>,
@@ -128,8 +144,16 @@ impl Interface {
         &self.methods
     }
 
+    pub fn inlined_methods(&self) -> &[MethodInline] {
+        &self.inline_methods
+    }
+
     pub fn functions(&self) -> &[Function] {
         &self.functions
+    }
+
+    pub fn inlined_functions(&self) -> &[FunctionInline] {
+        &self.inline_functions
     }
 
     pub fn virtual_methods(&self) -> &[VirtualMethod] {

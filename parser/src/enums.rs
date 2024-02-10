@@ -2,7 +2,11 @@ use xmlserde::Unparsed;
 use xmlserde_derives::XmlDeserialize;
 
 use crate::{
-    attribute::Attribute, function::Function, member::Member, prelude::*, version::Version,
+    attribute::Attribute,
+    function::{Function, FunctionInline},
+    member::Member,
+    prelude::*,
+    version::Version,
     Stability,
 };
 
@@ -41,9 +45,10 @@ pub struct Enumeration {
     #[xmlserde(name = b"member", ty = "child")]
     members: Vec<Member>,
     // Functions
-    // TODO: add inline functions support
     #[xmlserde(name = b"function", ty = "child")]
     functions: Vec<Function>,
+    #[xmlserde(name = b"function-inline", ty = "child")]
+    inline_functions: Vec<FunctionInline>,
 }
 
 impl Enumeration {
@@ -73,6 +78,10 @@ impl Enumeration {
 
     pub fn functions(&self) -> &[Function] {
         &self.functions
+    }
+
+    pub fn inlined_functions(&self) -> &[FunctionInline] {
+        &self.inline_functions
     }
 }
 

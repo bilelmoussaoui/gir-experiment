@@ -2,8 +2,14 @@ use xmlserde::Unparsed;
 use xmlserde_derives::XmlDeserialize;
 
 use crate::{
-    attribute::Attribute, field::Field, function::Function, method::Method, prelude::*,
-    union::Union, version::Version, Stability,
+    attribute::Attribute,
+    field::Field,
+    function::{Function, FunctionInline},
+    method::{Method, MethodInline},
+    prelude::*,
+    union::Union,
+    version::Version,
+    Stability,
 };
 
 #[derive(Debug, XmlDeserialize)]
@@ -58,10 +64,17 @@ pub struct Record {
     fields: Vec<Field>,
     #[xmlserde(name = b"union", ty = "child")]
     unions: Vec<Union>,
+
     #[xmlserde(name = b"function", ty = "child")]
     functions: Vec<Function>,
+    #[xmlserde(name = b"function-inline", ty = "child")]
+    inline_functions: Vec<FunctionInline>,
+
     #[xmlserde(name = b"method", ty = "child")]
     methods: Vec<Method>,
+    #[xmlserde(name = b"inline-methods", ty = "child")]
+    inline_methods: Vec<MethodInline>,
+
     #[xmlserde(name = b"constructor", ty = "child")]
     constructors: Vec<Function>,
 }
@@ -123,12 +136,20 @@ impl Record {
         &self.unions
     }
 
+    pub fn methods(&self) -> &[Method] {
+        &self.methods
+    }
+
+    pub fn inlined_methods(&self) -> &[MethodInline] {
+        &self.inline_methods
+    }
+
     pub fn functions(&self) -> &[Function] {
         &self.functions
     }
 
-    pub fn methods(&self) -> &[Method] {
-        &self.methods
+    pub fn inlined_functions(&self) -> &[FunctionInline] {
+        &self.inline_functions
     }
 
     pub fn constructors(&self) -> &[Function] {

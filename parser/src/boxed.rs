@@ -1,7 +1,13 @@
 use xmlserde::Unparsed;
 use xmlserde_derives::XmlDeserialize;
 
-use crate::{attribute::Attribute, function::Function, prelude::*, version::Version, Stability};
+use crate::{
+    attribute::Attribute,
+    function::{Function, FunctionInline},
+    prelude::*,
+    version::Version,
+    Stability,
+};
 
 #[derive(Debug, XmlDeserialize)]
 pub struct Boxed {
@@ -42,6 +48,8 @@ pub struct Boxed {
 
     #[xmlserde(name = b"function", ty = "child")]
     functions: Vec<Function>,
+    #[xmlserde(name = b"function-inline", ty = "child")]
+    inline_functions: Vec<FunctionInline>,
 }
 
 impl Boxed {
@@ -75,6 +83,10 @@ impl Boxed {
 
     pub fn functions(&self) -> &[Function] {
         &self.functions
+    }
+
+    pub fn inlined_functions(&self) -> &[FunctionInline] {
+        &self.inline_functions
     }
 }
 
