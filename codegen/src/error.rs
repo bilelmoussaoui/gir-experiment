@@ -8,4 +8,6 @@ pub enum Error {
     IO(#[from] std::io::Error),
     #[error("GIR file {0} not found in the following directories {1:#?}")]
     GirFileNotFound(String, Vec<String>),
+    #[error("Failed to render template")]
+    Template(#[from] tera::Error),
 }
