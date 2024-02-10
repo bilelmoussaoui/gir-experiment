@@ -5,11 +5,15 @@ mod constants;
 mod enums;
 use crate::{Library, Result};
 
-fn generate_mod(tera: &tera::Tera, _library: &Library, dest: impl std::io::Write) -> Result<()> {
+fn generate_mod(
+    tera: &tera::Tera,
+    context: &tera::Context,
+    _library: &Library,
+    dest: impl std::io::Write,
+) -> Result<()> {
     tracing::info!("Generating mod.rs");
 
-    let context = tera::Context::new();
-    tera.render_to("mod.rs", &context, dest)?;
+    tera.render_to("mod.rs", context, dest)?;
     Ok(())
 }
 
@@ -38,24 +42,33 @@ pub fn generate(library: &Library, dest_dir: impl AsRef<Path>) -> Result<()> {
     let dest = std::fs::OpenOptions::new()
         .create(true)
         .write(true)
-        .open(src_dir.join("mod.rs"))?;
-    generate_mod(&tera, library, dest)?;
-
-    let dest = std::fs::OpenOptions::new()
-        .create(true)
-        .write(true)
         .open(src_dir.join("enums.rs"))?;
-    enums::generate(&tera, library, dest)?;
+    let enums_output = enums::generate(&tera, library, dest)?;
     let dest = std::fs::OpenOptions::new()
         .create(true)
         .write(true)
         .open(src_dir.join("alias.rs"))?;
-    aliases::generate(&tera, library, dest)?;
+    let aliases_output = aliases::generate(&tera, library, dest)?;
     let dest = std::fs::OpenOptions::new()
         .create(true)
         .write(true)
         .open(src_dir.join("constants.rs"))?;
-    constants::generate(&tera, library, dest)?;
+    let constants_output = constants::generate(&tera, library, dest)?;
+
+    let mut context = tera::Context::new();
+    context.insert("enums", &enums_output);
+    context.insert("flags", &false);
+    context.insert("aliases", &aliases_output);
+    context.insert("global_functions", &false);
+    context.insert("constants", &constants_output);
+    context.insert("traits", &false);
+    context.insert("builders", &false);
+
+    let dest = std::fs::OpenOptions::new()
+        .create(true)
+        .write(true)
+        .open(src_dir.join("mod.rs"))?;
+    generate_mod(&tera, &context, library, dest)?;
 
     Ok(())
 }

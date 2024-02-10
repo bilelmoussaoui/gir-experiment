@@ -10,7 +10,11 @@ pub struct Constant {
     ty_value: String,
 }
 
-pub fn generate(tera: &tera::Tera, library: &Library, dest: impl std::io::Write) -> Result<()> {
+pub fn generate(
+    tera: &tera::Tera,
+    library: &Library,
+    dest: impl std::io::Write,
+) -> Result<Vec<Constant>> {
     let namespace = library.repository.namespace();
     tracing::info!("Generating constants.rs");
 
@@ -28,5 +32,5 @@ pub fn generate(tera: &tera::Tera, library: &Library, dest: impl std::io::Write)
     let mut context = tera::Context::new();
     context.insert("constants", &constants);
     tera.render_to("constants.rs", &context, dest)?;
-    Ok(())
+    Ok(constants)
 }

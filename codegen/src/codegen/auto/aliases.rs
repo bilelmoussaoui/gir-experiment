@@ -8,7 +8,11 @@ pub struct Alias {
     c_type: String,
 }
 
-pub fn generate(tera: &tera::Tera, library: &Library, dest: impl std::io::Write) -> Result<()> {
+pub fn generate(
+    tera: &tera::Tera,
+    library: &Library,
+    dest: impl std::io::Write,
+) -> Result<Vec<Alias>> {
     let namespace = library.repository.namespace();
     tracing::info!("Generating alias.rs");
 
@@ -24,5 +28,5 @@ pub fn generate(tera: &tera::Tera, library: &Library, dest: impl std::io::Write)
     let mut context = tera::Context::new();
     context.insert("aliases", &aliases);
     tera.render_to("alias.rs", &context, dest)?;
-    Ok(())
+    Ok(aliases)
 }

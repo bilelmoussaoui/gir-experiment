@@ -16,7 +16,11 @@ pub struct Enum {
     members: Vec<Member>,
 }
 
-pub fn generate(tera: &tera::Tera, library: &Library, dest: impl std::io::Write) -> Result<()> {
+pub fn generate(
+    tera: &tera::Tera,
+    library: &Library,
+    dest: impl std::io::Write,
+) -> Result<Vec<Enum>> {
     let namespace = library.repository.namespace();
     tracing::info!("Generating enums.rs");
 
@@ -40,5 +44,5 @@ pub fn generate(tera: &tera::Tera, library: &Library, dest: impl std::io::Write)
     let mut context = tera::Context::new();
     context.insert("enums", &enums);
     tera.render_to("enums.rs", &context, dest)?;
-    Ok(())
+    Ok(enums)
 }
