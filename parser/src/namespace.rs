@@ -27,9 +27,12 @@ pub struct Namespace {
     #[xmlserde(name = b"version", ty = "attr")]
     version: Version,
     #[xmlserde(name = b"c:identifier-prefixes", ty = "attr")]
-    c_identifier_prefixes: String,
+    c_identifier_prefixes: Option<String>,
+    // Deprecated, backwards compatibility only
+    #[xmlserde(name = b"c:prefix", ty = "attr")]
+    c_prefix: Option<String>,
     #[xmlserde(name = b"c:symbol-prefixes", ty = "attr")]
-    c_symbol_prefixes: String,
+    c_symbol_prefixes: Option<String>,
     #[xmlserde(name = b"shared-library", ty = "attr")]
     shared_library: Option<String>,
 
@@ -74,11 +77,14 @@ impl Namespace {
     }
 
     pub fn c_identifier_prefixes(&self) -> &str {
-        &self.c_identifier_prefixes
+        self.c_identifier_prefixes
+            .as_ref()
+            .or(self.c_prefix.as_ref())
+            .unwrap()
     }
 
-    pub fn c_symbol_prefixes(&self) -> &str {
-        &self.c_symbol_prefixes
+    pub fn c_symbol_prefixes(&self) -> Option<&str> {
+        self.c_symbol_prefixes.as_deref()
     }
 
     pub fn shared_library(&self) -> Option<&str> {

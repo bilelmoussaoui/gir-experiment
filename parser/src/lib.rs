@@ -151,7 +151,7 @@ mod tests {
         assert_eq!(namespace.name(), "PangoXft");
         assert_eq!(namespace.shared_library(), Some("libpangoxft-1.0.so.0"));
         assert_eq!(namespace.c_identifier_prefixes(), "PangoXft");
-        assert_eq!(namespace.c_symbol_prefixes(), "pango_xft");
+        assert_eq!(namespace.c_symbol_prefixes(), Some("pango_xft"));
 
         let macros = namespace.macros();
         assert_eq!(macros[0].name(), "FONT");
@@ -229,7 +229,7 @@ mod tests {
         assert_eq!(namespace.version(), "2.0");
         assert_eq!(namespace.name(), "xft");
         assert_eq!(namespace.c_identifier_prefixes(), "Xft");
-        assert_eq!(namespace.c_symbol_prefixes(), "Xft");
+        assert_eq!(namespace.c_symbol_prefixes(), Some("Xft"));
     }
 
     #[test]
@@ -240,7 +240,7 @@ mod tests {
         assert_eq!(namespace.version(), "2.0");
         assert_eq!(namespace.name(), "xlib");
         assert_eq!(namespace.c_identifier_prefixes(), "");
-        assert_eq!(namespace.c_symbol_prefixes(), "X");
+        assert_eq!(namespace.c_symbol_prefixes(), Some("X"));
         let aliases = namespace.aliases();
         assert_eq!(aliases[0].name(), "Atom");
         assert_eq!(aliases[0].c_type(), "Atom");
@@ -274,7 +274,7 @@ mod tests {
         assert_eq!(namespace.version(), "1.3");
         assert_eq!(namespace.name(), "xrandr");
         assert_eq!(namespace.c_identifier_prefixes(), "XRR");
-        assert_eq!(namespace.c_symbol_prefixes(), "XRR");
+        assert_eq!(namespace.c_symbol_prefixes(), Some("XRR"));
         let records = namespace.records();
         assert_eq!(records[0].name(), Some("ScreenSize"));
         assert_eq!(records[0].c_type(), Some("XRRScreenSize"));
