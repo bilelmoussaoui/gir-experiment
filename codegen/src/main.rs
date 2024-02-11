@@ -21,12 +21,12 @@ pub struct Library {
 }
 
 fn find_file_or_fail(filename: &str, paths: &[PathBuf]) -> Result<PathBuf> {
-    tracing::debug!("Trying to find gir file {filename} in {:#?}", paths);
+    tracing::debug!("Searching for `{filename}` in {:#?}", paths);
     for parent in paths {
         let parent = match parent.canonicalize() {
             Err(e) if e.kind() == std::io::ErrorKind::NotFound => {
                 tracing::warn!(
-                    "GIR directory {} could not be found, skipping",
+                    "Directory `{}` could not be found, skipping",
                     parent.display()
                 );
                 continue;
@@ -36,7 +36,10 @@ fn find_file_or_fail(filename: &str, paths: &[PathBuf]) -> Result<PathBuf> {
 
         let gir_file = parent.canonicalize()?.join(filename);
         if gir_file.exists() {
-            tracing::info!("GIR file found at {}", gir_file.display());
+            tracing::info!(
+                "`{filename}` found in {}",
+                gir_file.parent().unwrap().display()
+            );
             return Ok(gir_file);
         }
     }

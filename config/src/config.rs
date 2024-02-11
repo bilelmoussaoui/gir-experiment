@@ -4,14 +4,19 @@ use parser::version::Version;
 use serde::Deserialize;
 
 use super::ParserError;
-use crate::{enums::Mode, object::Object};
+use crate::{enums::Mode, object::Object, Concurrency};
 
 #[derive(Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Options {
     library: String,
     version: Version,
     min_cfg_version: Version,
-    target_path: PathBuf,
+    target_path: Option<PathBuf>,
+    concurrency: Option<Concurrency>,
+    generate_display_trait: Option<bool>,
+    #[serde(default)]
+    external_libraries: Vec<String>,
     #[serde(default)]
     girs_directories: Vec<PathBuf>,
     deprecate_by_min_version: Option<bool>,
@@ -45,11 +50,12 @@ impl Options {
 }
 
 #[derive(Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Config {
     options: Options,
     #[serde(default)]
     object: Vec<Object>,
-    external_libraries: toml::Value,
+    external_libraries: Option<toml::Value>,
 }
 
 impl Config {

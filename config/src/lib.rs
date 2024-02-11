@@ -14,3 +14,8 @@ mod enums;
 pub use enums::{Concurrency, Mode, SafetyAssertion, StringType, Visibility};
 mod function;
 mod object;
+pub use object::Object;
+mod constant;
+mod member;
+mod property;
+mod signal;

@@ -4,8 +4,17 @@ use serde::Deserialize;
 use crate::enums::{SafetyAssertion, StringType, Visibility};
 
 #[derive(Debug, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum Transformation {
+    Borrow,
+    TreePath,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Parameter {
     name: Option<String>,
+    new_name: Option<String>,
     pattern: Option<String>,
     nullable: Option<bool>,
     r#move: Option<bool>,
@@ -13,11 +22,15 @@ pub struct Parameter {
     length_of: Option<String>,
     string_type: Option<StringType>,
     r#unsafe: Option<bool>,
+    mandatory: Option<bool>,
+    transformation: Option<Transformation>,
 }
 
 #[derive(Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct FunctionReturn {
     nullable: Option<bool>,
+    mandatory: Option<bool>,
     bool_return_is_error: Option<String>,
     nullable_return_is_error: Option<String>,
     use_return_for_result: Option<bool>,
@@ -26,6 +39,7 @@ pub struct FunctionReturn {
 }
 
 #[derive(Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Function {
     name: Option<String>,
     pattern: Option<String>,
@@ -34,6 +48,7 @@ pub struct Function {
     version: Option<Version>,
     cfg_condition: Option<String>,
     doc_hidden: Option<bool>,
+    doc_struct_name: Option<String>,
     disable_length_detect: Option<bool>,
     no_future: Option<bool>,
     rename: Option<String>,
