@@ -19,4 +19,5 @@ pub struct Property {
     version: Option<Version>,
     ignore: Option<bool>,
     manual: Option<bool>,
+    doc_trait_name: Option<String>,
 }

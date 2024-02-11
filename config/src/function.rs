@@ -45,6 +45,7 @@ pub struct Function {
     pattern: Option<String>,
     manual: Option<bool>,
     ignore: Option<bool>,
+    r#unsafe: Option<bool>,
     version: Option<Version>,
     cfg_condition: Option<String>,
     doc_hidden: Option<bool>,

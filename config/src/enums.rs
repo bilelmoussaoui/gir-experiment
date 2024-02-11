@@ -1,5 +1,8 @@
 use clap::ValueEnum;
-use serde::Deserialize;
+use serde::{
+    de::{self, Visitor},
+    Deserialize,
+};
 
 #[derive(ValueEnum, Deserialize, Default, Debug, Copy, Clone)]
 #[clap(rename_all = "snake_case")]
@@ -69,8 +72,6 @@ pub enum ConversionType {
         err_type: String,
     },
 }
-
-use serde::de::{self, Visitor};
 
 struct ConversionTypeVisitor;
 

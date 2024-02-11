@@ -25,8 +25,8 @@ pub struct Object {
     ref_mode: Option<RefMode>,
     #[serde(default)]
     derive: Vec<Derive>,
-    #[serde(default)]
     must_use: Option<bool>,
+    generate_display_trait: Option<bool>,
     conversion_type: Option<ConversionType>,
     generate_builder: Option<bool>,
     builder_postprocess: Option<String>,
